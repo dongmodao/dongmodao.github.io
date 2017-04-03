@@ -87,43 +87,28 @@
 
 
 
-<meta name="description" content="Author:dongmodao
+<meta name="description" content="Author: dongmodao
 
 
-接上篇今天来讲讲如何实现侧滑菜单。效果图如下：
-
-看上去是不是很丑陋？我觉得也是（捂脸）。不过后续我们会逐步完善它，使得它成为下面这样的：
-
-是不是就高大上不少呢！嘿嘿，不过凡事都要慢慢来，一口吃不成胖子，我们今天还是实现第一张图的效果吧。话不多说，开工！
-2. DrawerLayout 实现侧滑菜单侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通">
+接上篇今天来讲讲如何实现侧滑菜单。效果图如下：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Studio 中常用的一些布局(二)">
 <meta property="og:url" content="http://yoursite.com/2017/04/02/Android-Studio-中常用的一些布局-二/index.html">
 <meta property="og:site_name" content="dongmodao's Blog">
-<meta property="og:description" content="Author:dongmodao
+<meta property="og:description" content="Author: dongmodao
 
 
-接上篇今天来讲讲如何实现侧滑菜单。效果图如下：
-
-看上去是不是很丑陋？我觉得也是（捂脸）。不过后续我们会逐步完善它，使得它成为下面这样的：
-
-是不是就高大上不少呢！嘿嘿，不过凡事都要慢慢来，一口吃不成胖子，我们今天还是实现第一张图的效果吧。话不多说，开工！
-2. DrawerLayout 实现侧滑菜单侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通">
+接上篇今天来讲讲如何实现侧滑菜单。效果图如下：">
 <meta property="og:image" content="http://yoursite.com/2017/04/02/Android-Studio-中常用的一些布局-二/sea.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/04/02/Android-Studio-中常用的一些布局-二/rst.png">
 <meta property="og:image" content="http://yoursite.com/2017/04/02/Android-Studio-中常用的一些布局-二/nextrst.png">
-<meta property="og:updated_time" content="2017-04-02T14:05:38.705Z">
+<meta property="og:updated_time" content="2017-04-03T08:24:36.167Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Studio 中常用的一些布局(二)">
-<meta name="twitter:description" content="Author:dongmodao
+<meta name="twitter:description" content="Author: dongmodao
 
 
-接上篇今天来讲讲如何实现侧滑菜单。效果图如下：
-
-看上去是不是很丑陋？我觉得也是（捂脸）。不过后续我们会逐步完善它，使得它成为下面这样的：
-
-是不是就高大上不少呢！嘿嘿，不过凡事都要慢慢来，一口吃不成胖子，我们今天还是实现第一张图的效果吧。话不多说，开工！
-2. DrawerLayout 实现侧滑菜单侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通">
+接上篇今天来讲讲如何实现侧滑菜单。效果图如下：">
 <meta name="twitter:image" content="http://yoursite.com/2017/04/02/Android-Studio-中常用的一些布局-二/sea.jpg">
 
 
@@ -374,18 +359,18 @@
       
 
       
-        <center><br>Author:dongmodao<br></center>
+        <center><br>Author: dongmodao<br></center>
 
 <p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/sea.jpg" alt=""></p>
-<h2 id="接上篇"><a href="#接上篇" class="headerlink" title="接上篇"></a>接上篇</h2><p>今天来讲讲如何实现侧滑菜单。效果图如下：</p>
+<h2 id="接上篇"><a href="#接上篇" class="headerlink" title="接上篇"></a>接上篇</h2><p>今天来讲讲如何实现侧滑菜单。效果图如下：<a id="more"></a></p>
 <p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/rst.png" alt=""></p>
 <p>看上去是不是很丑陋？我觉得也是（捂脸）。不过后续我们会逐步完善它，使得它成为下面这样的：</p>
 <p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/nextrst.png" alt=""></p>
 <p>是不是就高大上不少呢！嘿嘿，不过凡事都要慢慢来，一口吃不成胖子，我们今天还是实现第一张图的效果吧。话不多说，开工！</p>
-<p>2. DrawerLayout 实现侧滑菜单<br>侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通过滑动的方式将菜单显示出来。为了实现这个效果，我们需要使用谷歌提供了一个 DrawerLayout 控件。这个控件实现侧滑菜单很方便。</p>
-<p>DrawerLayout 是一个布局，其中允许放入两个直接子控件，第一个子控件是显示主屏幕内容，第二个则是菜单的内容。在 activity_main.xml 中修改：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">FrameLayout...</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"This is Menu!"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"30sp"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"#FFF"</span>/&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>2.  DrawerLayout 实现侧滑菜单<br>侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通过滑动的方式将菜单显示出来。为了实现这个效果，我们需要使用谷歌提供了一个  DrawerLayout  控件。这个控件实现侧滑菜单很方便。</p>
+<p>DrawerLayout 是一个布局，其中允许放入两个直接子控件，第一个子控件是显示主屏幕内容，第二个则是菜单的内容。在  activity_main.xml 中修改：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">FrameLayout...</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"This is Menu!"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"30sp"</span></div><div class="line">        <span class="attr">android:background</span>=<span class="string">"#FFF"</span>/&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure></p>
 <p>在上面的 FrameLayout 中的部分就是我们上次主屏幕的布局代码，请主动移除其中多余的名字空间。此时在侧滑菜单中，我们看到只加入了一个 TextView，所有在当前的状态就只能看到一行字。其中要注意的是：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">android:layout_gravity=<span class="string">"start"</span></div></pre></td></tr></table></figure></p>
-<p>这个属性是必须指定的，start 表示根据系统语言的书写方向显示菜单的方向，也可以定义 left, right。意思很明显，此处不多解释。<br>此时，如果我们运行程序，通过滑动就可以看到侧滑菜单了。但是很多人有可能不会发现这个功能，所以我们给它加上一个导航按钮。在 MainActivity 中修改：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);</div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);</div><div class="line">        ActionBar actionBar = getSupportActionBar();</div><div class="line">        <span class="keyword">if</span>(actionBar != <span class="keyword">null</span>)&#123;</div><div class="line">            actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</div><div class="line">            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span>   <span class="comment">//菜单栏的点击事件</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (item.getItemId())&#123;</div><div class="line">            <span class="keyword">case</span> android.R.id.home:</div><div class="line">                mDrawerLayout.openDrawer(GravityCompat.START);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            ...</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这个属性是必须指定的，start 表示根据系统语言的书写方向显示菜单的方向，也可以定义 left, right。意思很明显，此处不多解释。<br>此时，如果我们运行程序，通过滑动就可以看到侧滑菜单了。但是很多人有可能不会发现这个功能，所以我们给它加上一个导航按钮。在 MainActivity  中修改：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);</div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);</div><div class="line">        ActionBar actionBar = getSupportActionBar();</div><div class="line">        <span class="keyword">if</span>(actionBar != <span class="keyword">null</span>)&#123;</div><div class="line">            actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</div><div class="line">            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span>   <span class="comment">//菜单栏的点击事件</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span></span>&#123;</div><div class="line">        <span class="keyword">switch</span> (item.getItemId())&#123;</div><div class="line">            <span class="keyword">case</span> android.R.id.home:</div><div class="line">                mDrawerLayout.openDrawer(GravityCompat.START);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            ...</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">          &#125;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
 <p>上面的代码应该很好理解，说明的一点就是 HomeAsUp 也即是 Toolbar 最左侧的按钮，默认是箭头，此处对它进行了修改，其 id 永远是 android.R.home，主要不要少了 android。<br>至此，在 Toolbar 的最左侧就有了一个按钮，可以打开侧滑菜单。今天的任务也就完成了。</p>
 <h4 id="小说明"><a href="#小说明" class="headerlink" title="小说明"></a>小说明</h4><p>这个布局系列后面还会继续，不过不一定是连续发，因为我可能写一个近期看的东西，比如最近在研究谷歌的基本 MVP 架构，也许下次先讲这个。至于布局系列可能会延后，不过不会停更。（如果发现有什么问题可以联系我）。</p>
 <blockquote>
@@ -440,6 +425,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/03/一些感触/" rel="prev" title="一些感触">
+                一些感触 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -549,7 +538,7 @@
               </span>
             
               <span class="links-of-author-item">
-                <a href="mailto:tangqihaopku@gmail.com" target="_blank" title="mail">
+                <a href="tangqihaopku@gmail.com" target="_blank" title="mail">
                   
                     <i class="fa fa-fw fa-globe"></i>
                   

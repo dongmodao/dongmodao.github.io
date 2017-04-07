@@ -1699,7 +1699,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #1dffa6;
+  background: #161fa1;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2865,4 +2865,10 @@ pre .javascript .function {
   .post-body {
     text-align: justify;
   }
+}
+body {
+  background-image: url("/images/background_night.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: 50% 60%;
 }

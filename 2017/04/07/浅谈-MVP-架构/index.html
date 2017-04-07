@@ -1,0 +1,801 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MVP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Author: dongmodao
+
+
+
+写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈 MVP">
+<meta property="og:url" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/index.html">
+<meta property="og:site_name" content="dongmodao's Blog">
+<meta property="og:description" content="Author: dongmodao
+
+
+
+写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/Model_View_Presenter_GUI_Design_Pattern.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/filelist.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/taskslist.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/BaseView.png">
+<meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/mvp.png">
+<meta property="og:updated_time" content="2017-04-07T09:50:39.793Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈 MVP">
+<meta name="twitter:description" content="Author: dongmodao
+
+
+
+写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta name="twitter:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/07/浅谈-MVP-架构/"/>
+
+
+
+
+
+  <title> 浅谈 MVP | dongmodao's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">dongmodao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/07/浅谈-MVP-架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dongmodao">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dongmodao's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅谈 MVP
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-07T11:49:45+08:00">
+                2017-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/07/浅谈-MVP-架构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/07/浅谈-MVP-架构/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">浏览量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center><br>Author: dongmodao<br></center>
+
+<hr>
+<p><img src="/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg" alt=""></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。<br><a id="more"></a></p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>这个 MVP 的介绍的项目主要是 Google 在 GitHub 上开源的一个 Android MVP 的实现，分析也是基于它的「android-architecture」项目下的子项目 「todo-mvp」。下面是项目的 GitHub 地址，有兴趣的同学可以尝试研究一下。</p>
+<p>GitHub地址: <a href="https://github.com/googlesamples/android-architecture?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">Android Architecture Blueprints</a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="什么是-MVP"><a href="#什么是-MVP" class="headerlink" title="什么是 MVP"></a>什么是 MVP</h3><p>MVP 全称是 Model-View-Presenter，是在 Model-View-Controller(MVC) 的基础上形成的一个新的架构。MVP 多数用在 UI 界面丰富的项目中。为了避免项目的整体结构过于复杂以及项目中单个文件的过度臃肿，使用 MVP 来让整体框架更加清晰，也更有利于进行模块化的开发、debug 的进行。想了解更多的同学可以看更多的关于 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="external">MVP</a> 和  <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="external">MVC</a> 的介绍。</p>
+<p>下面是在维基百科上找到的一张关于 MVP 设计范式的图解。</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/Model_View_Presenter_GUI_Design_Pattern.png" alt=""></p>
+<p>从上面可以看到，Presenter 充当了 Model 和 View 之间通讯的中间人。 Model 和 View 并不直接连接，这也就使得整个架构之间的关系变得比较简单明了。 在 View 中，用户触发了事件之后，View 就告诉了 Presenter， Presenter 从 View 中获取所需要的数据，然后对 Model 进行更新。Model 中发生的更新事件也是通过 Presenter 来传递给需要展示的 View。这样一来整个架构就显得很清晰。</p>
+<h3 id="android-architecture-todo-mvp"><a href="#android-architecture-todo-mvp" class="headerlink" title="android-architecture/todo-mvp"></a>android-architecture/todo-mvp</h3><p>下面进入到 todo-mvp 中来进行具体的分析。项目的总体结构如下图</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/filelist.png" alt=""></p>
+<p>可以看到，项目包含了两个公共的接口：BasePresenter 和 BaseView。这个项目中所有的 Presenter 都继承自 BasePresenter， 所有的 View 都是继承自 BaseView。</p>
+<p>接着看界面，项目基本上是按照功能进行分类，项目总共要显示 4 个 UI 界面，AddEditTask(添加任务界面)、Statistics(统计界面)、TaskDetail(任务详情界面)、Tasks(总任务界面：主界面)。每个界面（功能）都单独分了一个包进行处理，自行对应上图。</p>
+<p>另外要注意的就是 data 包和 util 包，data 文件夹主要就是模拟生成数据的包，包含了对本地数据和远端数据的模拟，也就是关于数据的一层，也即 Model。而 util 包就是工具类的包，比如创建 fragment 并添加到对应的 Activity 中的工作。</p>
+<p>下面来看 tasks 包的内容：</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/taskslist.png" alt=""></p>
+<p>其中 ScrollChildSwipeRefreshLayout 和 TasksFilterType 分别是对 SwipeRefreshLayout 布局的一些刷新功能的重写以及对 Task 类型的状态进行枚举。</p>
+<p>但是，最主要的还是 Activity、Contract、Fragment、Presenter。这四个类支撑起了整个 Tasks 界面。在着个项目中的其他界面中每一个都包含着相似的这四个类。看看官方的说法：</p>
+<blockquote>
+<p>In this version of the app, as well as other versions based on it, each screen is implemented using the following classes and interfaces:</p>
+<ul>
+<li>A contract class which defines the connection between the view and the presenter.(<em>简单的说就是定义了 View 和 Presenter 之间的关联关系的 Contract 类</em>)</li>
+<li>An Activity which creates fragments and presenters.(<em>生成了 fragment 和 Presenter 的 Activity</em>)</li>
+<li>A Fragment which implements the view interface.(<em>实现了 View 接口的 Fragment</em>)</li>
+<li>A presenter which implements the presenter interface in the corresponding contract.(<em>实现了对应的 Contract 中的 presenter 接口的 Presenter</em>)</li>
+</ul>
+</blockquote>
+<p>括弧中的内容是我根据翻译和自己对项目的理解做的翻译，希望各位大佬不要笑话。接下来再进行深入的分析。</p>
+<p>先从 Contract 开始， Contract 中定义了继承自 BaseView 的接口 View 以及继承自 BasePresenter 的 Presenter，同时还定义了 View 和 Presenter 在沟通的过程中所需要用到的各种方法。</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/BaseView.png" alt=""><br>上图中可以看到 BaseView 在四个界面的实现时都经过了 Contract 和 Fragment 的引用，前者声明接口，后者进行实现。</p>
+<p>接着看 TasksPresenter 和 TasksFragment，前者是实现了 TasksContract 中的 Presenter 的接口，后者是继承了 Fragment 并且实现了 TasksContract 中的 View 接口。在 TasksPresenter 中声明了一个私有的变量 TasksContract.View，即 mTasksView。这个 mTasksView 就是和这个 TasksPresenter 相互关联的 View，同样的，在 TasksFragment 中也有一个相应的 TasksContract.Presenter。这是 View 和 Presenter 之间通信的基础。</p>
+<p>让我们更深入一些！看当界面 TasksFragment 中发生点击事件时项目的内部发生了什么操作。在 TasksFragment 中定义了一个事件监听 mItemListener，如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Listener for clicks on tasks in the ListView.</div><div class="line"> */</div><div class="line">TaskItemListener mItemListener = <span class="keyword">new</span> TaskItemListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTaskClick</span><span class="params">(Task clickedTask)</span> </span>&#123;</div><div class="line">        mPresenter.openTaskDetails(clickedTask);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleteTaskClick</span><span class="params">(Task completedTask)</span> </span>&#123;</div><div class="line">        mPresenter.completeTask(completedTask);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivateTaskClick</span><span class="params">(Task activatedTask)</span> </span>&#123;</div><div class="line">        mPresenter.activateTask(activatedTask);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>所以当我们的点击事件发生时，实际上就调用了与 TasksFragment(View) 相联系的 mPresenter，执行了 openTaskDetails 的方法， 于是跳到 TasksPresenter 中有对应的代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openTaskDetails</span><span class="params">(@NonNull Task requestedTask)</span> </span>&#123;</div><div class="line">    checkNotNull(requestedTask, <span class="string">"requestedTask cannot be null!"</span>);</div><div class="line">    mTasksView.showTaskDetailsUi(requestedTask.getId());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Presenter 中可以进行相应的处理，可以和 Model 进行交互操作，此处是直接让对应的 TasksContract.View， 也即 mTasksView 执行了 showTaskDetailsUi 的方法。再次回到 TasksFragment 中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showTaskDetailsUi</span><span class="params">(String taskId)</span> </span>&#123;</div><div class="line">    <span class="comment">// in it's own Activity, since it makes more sense that way and it gives us the flexibility</span></div><div class="line">    <span class="comment">// to show some Intent stubbing.</span></div><div class="line">    Intent intent = <span class="keyword">new</span> Intent(getContext(), TaskDetailActivity.class);</div><div class="line">    intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);</div><div class="line">    startActivity(intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看到 TasksFragment 的这个方法直接就打开了一个 Activity，也就是对应的 TaskDetailActivity。</p>
+<p>最后看 Activity 中的内容，它主要就是生成了一个 TasksPresenter(mTasksPresenter) 和一个 TasksFragment(tasksFragment)，并通过工具类 util 把 tasksFragment 添加到 Activity 中。剩下的主要就是做一些与侧滑菜单和 Toolbar 相关的工作，之后就没有其他太多的功能了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过上面的内容之后，我相信你对 MVP 在 Android 项目中的应用已经有了一定的了解。我们通过官方的示意图最后来复习一下：</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/mvp.png" alt=""></p>
+<p>在项目中， Activity 包含了 View 和 Presenter。View 主要是用 Fragment 进行实现。View 和 Presenter 之间的联系十分紧密，但 View 并不能直接与 Model 层相连接， 只有通过 Presenter 的帮助才能完成数据的交互。图中左侧部分就是 Model 层，主要实现数据的操作等逻辑处理。</p>
+<p>吼了，就这样结束吧，一写就停不下来，停不下来就要写好久。。。<br>加油！</p>
+<p>参考文章：</p>
+<p><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="external">Android MVP 详解（上）</a></p>
+<p><a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp/" target="_blank" rel="external">todo-mvp的README.md</a></p>
+<center> — end — </center>
+
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MVP/" rel="tag"># MVP</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/03/一些感触/" rel="next" title="一些感触">
+                <i class="fa fa-chevron-left"></i> 一些感触
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/04/07/浅谈-MVP-架构/"
+           data-title="浅谈 MVP" data-url="http://yoursite.com/2017/04/07/浅谈-MVP-架构/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400"
+               alt="dongmodao" />
+          <p class="site-author-name" itemprop="name">dongmodao</p>
+           
+              <p class="site-description motion-element" itemprop="description">Stay Hungry, Stay Foolish.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/dongmodao" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="tangqihaopku@gmail.com" target="_blank" title="mail">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-MVP"><span class="nav-number">3.1.</span> <span class="nav-text">什么是 MVP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#android-architecture-todo-mvp"><span class="nav-number">3.2.</span> <span class="nav-text">android-architecture/todo-mvp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongmodao</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user">访问次数</i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye">总访问量</i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"dongmodaoblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -90,9 +90,7 @@
 <meta name="description" content="Author: dongmodao
 
 
-侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：
-
-菜单页面定制布局谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Su">
+侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Studio 中常用的一些布局(三)">
 <meta property="og:url" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/index.html">
@@ -100,20 +98,16 @@
 <meta property="og:description" content="Author: dongmodao
 
 
-侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：
-
-菜单页面定制布局谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Su">
+侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
 <meta property="og:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png">
-<meta property="og:updated_time" content="2017-04-16T15:36:12.820Z">
+<meta property="og:updated_time" content="2017-04-17T15:20:14.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Studio 中常用的一些布局(三)">
 <meta name="twitter:description" content="Author: dongmodao
 
 
-侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：
-
-菜单页面定制布局谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Su">
+侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
 <meta name="twitter:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg">
 
 
@@ -377,8 +371,7 @@
         <center><br>Author: dongmodao<br></center>
 
 <p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg" alt=""></p>
-<h2 id="侧滑菜单的优化"><a href="#侧滑菜单的优化" class="headerlink" title="侧滑菜单的优化"></a>侧滑菜单的优化</h2><p>这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：</p>
-<p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png" alt=""></p>
+<h2 id="侧滑菜单的优化"><a href="#侧滑菜单的优化" class="headerlink" title="侧滑菜单的优化"></a>侧滑菜单的优化</h2><p>这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：<br><a id="more"></a><br><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png" alt=""></p>
 <h3 id="菜单页面定制布局"><a href="#菜单页面定制布局" class="headerlink" title="菜单页面定制布局"></a>菜单页面定制布局</h3><p>谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Support 库中提供的一个控件，所以我们首先要添加对应的依赖项。在 app/build.gradle 中添加依赖项如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">compile 'com.android.support:appcompat-v7:25.3.0'</div><div class="line">compile 'com.android.support:design:25.3.0'</div><div class="line">compile 'de.hdodenhof:circleimageview:2.1.0'</div></pre></td></tr></table></figure></p>
 <p>注意依赖包的版本问题，support 包的版本要一致，此处我用的是 25.3.0 的版本。其中的 circleimageview 是一个实现图片圆形化的包。</p>
 <p>另外，在 NavigationView 中，我们还需要准备两个布局，一个 menu 和 一个 headerLayout，分别对应的是成果图中的下部菜单选项和上部个人信息部分。在 menu 文件夹中生成一个 nav_menu.xml 文件，编写：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_call"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/account_circle"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Call"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_friends"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/people_white"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Friends"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_location"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/my_location"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Location"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_mail"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/event"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Mail"</span>/&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_task"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/settings_white"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Tasks"</span>/&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div></pre></td></tr></table></figure></p>

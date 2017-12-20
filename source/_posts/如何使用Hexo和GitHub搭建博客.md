@@ -73,7 +73,8 @@ git clone https://github.com/iissnan/hexo-theme-next.git
 ```
 就是转到 themes 文件夹，然后远程下载 next 主题。更多的主题可以去看 [hexo主题](https://hexo.io/themes/)。然后选中主题，再克隆到本地即可。
 下载完成之后，修改 「Blog/_config.yml」 文件中的 theme 的值为：hexo-theme-next，即那你要使用的主题名称。如图：
-![](如何使用Hexo和GitHub搭建博客/themes.png)
+![](如何使用Hexo和GitHub搭建博客/themes.png "themes.png")
+
 
 ## 新建博客
 完成了上述的操作之后，我们已经把博客的框架搭建好了。下面来尝试新建一个新的文章。这些内容可以在自动生成的Hello World」中看到。这里就简单写一下。
@@ -100,6 +101,11 @@ message 为此次提交的信息。提交成功之后，就可以访问 http://u
 
 ## 后记
 到此，我们就已经完成了博客的搭建了，并且还新建了一篇文章。上面介绍了一些基本的操作，但是并不只有这些操作，如果在实践的过程中遇到问题，可以邮件(tangqihaopku@gmail.com)联系我。当然，在整个过程中，我们需要配置的主要是「Blog/_config.yml」和「Blog/themes/hexo-theme-next/_config.yml」文件，只要把它们设置好了就没有多大问题了。
+
+
+### 补充--关于更换电脑之后更新博客的问题
+可以参考知乎上的这个问题的答案：[使用hexo，如果换了电脑怎么更新博客？](https://www.zhihu.com/question/21193762)。我采用的是 CrazyMilk 的解决方式。
+
 
 <center> --- end --- </center>
 

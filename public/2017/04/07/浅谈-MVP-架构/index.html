@@ -87,34 +87,24 @@
 
 
 
-<meta name="description" content="Author: dongmodao
-
-
-
-写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta name="description" content="Author: dongmodao    写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta name="keywords" content="MVP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈 MVP">
 <meta property="og:url" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/index.html">
-<meta property="og:site_name" content="dongmodao's Blog">
-<meta property="og:description" content="Author: dongmodao
-
-
-
-写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta property="og:site_name" content="dongmodao&#39;s Blog">
+<meta property="og:description" content="Author: dongmodao    写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/Model_View_Presenter_GUI_Design_Pattern.png">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/filelist.png">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/taskslist.png">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/BaseView.png">
 <meta property="og:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/mvp.png">
-<meta property="og:updated_time" content="2017-04-07T15:48:30.679Z">
+<meta property="og:updated_time" content="2017-12-19T06:34:36.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈 MVP">
-<meta name="twitter:description" content="Author: dongmodao
-
-
-
-写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
+<meta name="twitter:description" content="Author: dongmodao    写在前面「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。">
 <meta name="twitter:image" content="http://yoursite.com/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg">
 
 
@@ -124,7 +114,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -381,8 +371,8 @@
 <p><img src="/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg" alt=""></p>
 <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。<br><a id="more"></a></p>
 <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>这个 MVP 的介绍的项目主要是 Google 在 GitHub 上开源的一个 Android MVP 的实现，分析也是基于它的「android-architecture」项目下的子项目 「todo-mvp」。下面是项目的 GitHub 地址，有兴趣的同学可以尝试研究一下。</p>
-<p>GitHub地址: <a href="https://github.com/googlesamples/android-architecture?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">Android Architecture Blueprints</a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="什么是-MVP"><a href="#什么是-MVP" class="headerlink" title="什么是 MVP"></a>什么是 MVP</h3><p>MVP 全称是 Model-View-Presenter，是在 Model-View-Controller(MVC) 的基础上形成的一个新的架构。MVP 多数用在 UI 界面丰富的项目中。为了避免项目的整体结构过于复杂以及项目中单个文件的过度臃肿，使用 MVP 来让整体框架更加清晰，也更有利于进行模块化的开发、debug 的进行。想了解更多的同学可以看更多的关于 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="external">MVP</a> 和  <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="external">MVC</a> 的介绍。</p>
+<p>GitHub地址: <a href="https://github.com/googlesamples/android-architecture?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">Android Architecture Blueprints</a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="什么是-MVP"><a href="#什么是-MVP" class="headerlink" title="什么是 MVP"></a>什么是 MVP</h3><p>MVP 全称是 Model-View-Presenter，是在 Model-View-Controller(MVC) 的基础上形成的一个新的架构。MVP 多数用在 UI 界面丰富的项目中。为了避免项目的整体结构过于复杂以及项目中单个文件的过度臃肿，使用 MVP 来让整体框架更加清晰，也更有利于进行模块化的开发、debug 的进行。想了解更多的同学可以看更多的关于 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">MVP</a> 和  <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">MVC</a> 的介绍。</p>
 <p>下面是在维基百科上找到的一张关于 MVP 设计范式的图解。</p>
 <p><img src="/2017/04/07/浅谈-MVP-架构/Model_View_Presenter_GUI_Design_Pattern.png" alt=""></p>
 <p>从上面可以看到，Presenter 充当了 Model 和 View 之间通讯的中间人。 Model 和 View 并不直接连接，这也就使得整个架构之间的关系变得比较简单明了。 在 View 中，用户触发了事件之后，View 就告诉了 Presenter， Presenter 从 View 中获取所需要的数据，然后对 Model 进行更新。Model 中发生的更新事件也是通过 Presenter 来传递给需要展示的 View。这样一来整个架构就显得很清晰。</p>
@@ -408,9 +398,9 @@
 <p>先从 Contract 开始， Contract 中定义了继承自 BaseView 的接口 View 以及继承自 BasePresenter 的 Presenter，同时还定义了 View 和 Presenter 在沟通的过程中所需要用到的各种方法。</p>
 <p><img src="/2017/04/07/浅谈-MVP-架构/BaseView.png" alt=""><br>上图中可以看到 BaseView 在四个界面的实现时都经过了 Contract 和 Fragment 的引用，前者声明接口，后者进行实现。</p>
 <p>接着看 TasksPresenter 和 TasksFragment，前者是实现了 TasksContract 中的 Presenter 的接口，后者是继承了 Fragment 并且实现了 TasksContract 中的 View 接口。在 TasksPresenter 中声明了一个私有的变量 TasksContract.View，即 mTasksView。这个 mTasksView 就是和这个 TasksPresenter 相互关联的 View，同样的，在 TasksFragment 中也有一个相应的 TasksContract.Presenter。这是 View 和 Presenter 之间通信的基础。</p>
-<p>让我们更深入一些！看当界面 TasksFragment 中发生点击事件时项目的内部发生了什么操作。在 TasksFragment 中定义了一个事件监听 mItemListener，如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Listener for clicks on tasks in the ListView.</div><div class="line"> */</div><div class="line">TaskItemListener mItemListener = <span class="keyword">new</span> TaskItemListener() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTaskClick</span><span class="params">(Task clickedTask)</span> </span>&#123;</div><div class="line">        mPresenter.openTaskDetails(clickedTask);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleteTaskClick</span><span class="params">(Task completedTask)</span> </span>&#123;</div><div class="line">        mPresenter.completeTask(completedTask);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivateTaskClick</span><span class="params">(Task activatedTask)</span> </span>&#123;</div><div class="line">        mPresenter.activateTask(activatedTask);</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-<p>所以当我们的点击事件发生时，实际上就调用了与 TasksFragment(View) 相联系的 mPresenter，执行了 openTaskDetails 的方法， 于是跳到 TasksPresenter 中有对应的代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openTaskDetails</span><span class="params">(@NonNull Task requestedTask)</span> </span>&#123;</div><div class="line">    checkNotNull(requestedTask, <span class="string">"requestedTask cannot be null!"</span>);</div><div class="line">    mTasksView.showTaskDetailsUi(requestedTask.getId());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>Presenter 中可以进行相应的处理，可以和 Model 进行交互操作，此处是直接让对应的 TasksContract.View， 也即 mTasksView 执行了 showTaskDetailsUi 的方法。再次回到 TasksFragment 中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showTaskDetailsUi</span><span class="params">(String taskId)</span> </span>&#123;</div><div class="line">    <span class="comment">// in it's own Activity, since it makes more sense that way and it gives us the flexibility</span></div><div class="line">    <span class="comment">// to show some Intent stubbing.</span></div><div class="line">    Intent intent = <span class="keyword">new</span> Intent(getContext(), TaskDetailActivity.class);</div><div class="line">    intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);</div><div class="line">    startActivity(intent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>让我们更深入一些！看当界面 TasksFragment 中发生点击事件时项目的内部发生了什么操作。在 TasksFragment 中定义了一个事件监听 mItemListener，如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Listener for clicks on tasks in the ListView.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">TaskItemListener mItemListener = <span class="keyword">new</span> TaskItemListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTaskClick</span><span class="params">(Task clickedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.openTaskDetails(clickedTask);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleteTaskClick</span><span class="params">(Task completedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.completeTask(completedTask);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivateTaskClick</span><span class="params">(Task activatedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.activateTask(activatedTask);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>所以当我们的点击事件发生时，实际上就调用了与 TasksFragment(View) 相联系的 mPresenter，执行了 openTaskDetails 的方法， 于是跳到 TasksPresenter 中有对应的代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openTaskDetails</span><span class="params">(@NonNull Task requestedTask)</span> </span>&#123;</span><br><span class="line">    checkNotNull(requestedTask, <span class="string">"requestedTask cannot be null!"</span>);</span><br><span class="line">    mTasksView.showTaskDetailsUi(requestedTask.getId());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Presenter 中可以进行相应的处理，可以和 Model 进行交互操作，此处是直接让对应的 TasksContract.View， 也即 mTasksView 执行了 showTaskDetailsUi 的方法。再次回到 TasksFragment 中：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showTaskDetailsUi</span><span class="params">(String taskId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// in it's own Activity, since it makes more sense that way and it gives us the flexibility</span></span><br><span class="line">    <span class="comment">// to show some Intent stubbing.</span></span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(getContext(), TaskDetailActivity.class);</span><br><span class="line">    intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);</span><br><span class="line">    startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>看到 TasksFragment 的这个方法直接就打开了一个 Activity，也就是对应的 TaskDetailActivity。</p>
 <p>最后看 Activity 中的内容，它主要就是生成了一个 TasksPresenter(mTasksPresenter) 和一个 TasksFragment(tasksFragment)，并通过工具类 util 把 tasksFragment 添加到 Activity 中。剩下的主要就是做一些与侧滑菜单和 Toolbar 相关的工作，之后就没有其他太多的功能了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过上面的内容之后，我相信你对 MVP 在 Android 项目中的应用已经有了一定的了解。我们通过官方的示意图最后来复习一下：</p>
@@ -418,8 +408,8 @@
 <p>在项目中， Activity 包含了 View 和 Presenter。View 主要是用 Fragment 进行实现。View 和 Presenter 之间的联系十分紧密，但 View 并不能直接与 Model 层相连接， 只有通过 Presenter 的帮助才能完成数据的交互。图中左侧部分就是 Model 层，主要实现数据的操作等逻辑处理。</p>
 <p>吼了，就这样结束吧，一写就停不下来，停不下来就要写好久。。。<br>加油！</p>
 <p>参考文章：</p>
-<p><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="external">Android MVP 详解（上）</a></p>
-<p><a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp/" target="_blank" rel="external">todo-mvp的README.md</a></p>
+<p><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="noopener">Android MVP 详解（上）</a></p>
+<p><a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp/" target="_blank" rel="noopener">todo-mvp的README.md</a></p>
 <center> — end — </center>
 
 <hr>
@@ -565,7 +555,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -620,7 +610,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-MVP"><span class="nav-number">3.1.</span> <span class="nav-text">什么是 MVP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#android-architecture-todo-mvp"><span class="nav-number">3.2.</span> <span class="nav-text">android-architecture/todo-mvp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5199;&#x5728;&#x524D;&#x9762;" class="headerlink" title="&#x5199;&#x5728;&#x524D;&#x9762;"></a>&#x5199;&#x5728;&#x524D;&#x9762;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x8BF4;&#x660E;" class="headerlink" title="&#x8BF4;&#x660E;"></a>&#x8BF4;&#x660E;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6B63;&#x6587;" class="headerlink" title="&#x6B63;&#x6587;"></a>&#x6B63;&#x6587;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-MVP"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#&#x4EC0;&#x4E48;&#x662F;-MVP" class="headerlink" title="&#x4EC0;&#x4E48;&#x662F; MVP"></a>&#x4EC0;&#x4E48;&#x662F; MVP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#android-architecture-todo-mvp"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#android-architecture-todo-mvp" class="headerlink" title="android-architecture/todo-mvp"></a>android-architecture/todo-mvp</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li></ol></div>
             
 
           </div>
@@ -642,8 +632,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,7 +1,7 @@
 ---
 title: Android Day 1
 date: 2018-05-30 23:56:19
-tags:[Android]
+tags: [Android]
 categories: [技术]
 ---
 <center>

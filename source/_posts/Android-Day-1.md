@@ -10,8 +10,7 @@ Author: dongmodao
 
 ---
 
-
-## Android - Day 1
+![](Android-Day-1/index.jpg)
 
 ### Activity
 一种包含用户界面的组件，主要用于和用户进行交互。
@@ -21,7 +20,7 @@ Author: dongmodao
  + extends AppCompatActivity
  + onCreate() // 重写方法
  + setContentView(R.layout.layout_name) //加载布局
- + AndroidManifest, <activity android:name=".Activity_Name">  //注册 
+ + AndroidManifest, <activity android:name=".Activity_Name">  //注册
  + finsh()      // 销毁活动
 #### Menu
  1. res->New->Directory->menu, New->Menu resource file->file_name;建立menu的xml文件。
@@ -99,7 +98,3 @@ Author: dongmodao
   + gravity与layout_gravity:前者是View内部内容的布局位置、后者是布局在父布局的位置
 
 待续---2018年5月30日23点52分
-
-
-
-

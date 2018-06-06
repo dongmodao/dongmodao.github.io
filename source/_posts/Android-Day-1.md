@@ -21,7 +21,7 @@ Author: dongmodao
  + onCreate() // 重写方法
  + setContentView(R.layout.layout_name) //加载布局
  + AndroidManifest, <activity android:name=".Activity_Name">  //注册
- + finsh()      // 销毁活动
+ + finsh()      // 销毁活动 <!-- more -->
 #### Menu
  1. res->New->Directory->menu, New->Menu resource file->file_name;建立menu的xml文件。
  2. Activity 中重写 onCreateOptionsMenu(), getMenuInflater().inflate(menu_xml);

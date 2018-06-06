@@ -18,7 +18,7 @@ Author: dongmodao
   + 写布局 xml 文件
   + 使用 LayoutInflater.from(Context).inflate(layout_id, parent_layout[this])
   + 重写事件等
- 2. 完全自定义 View
+ 2. 完全自定义 View<!-- more -->
 
 
 #### 重要控件

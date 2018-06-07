@@ -50,3 +50,8 @@ Author: dongmodao
 
 
 [1]:https://developer.android.com/studio/write/draw9patch?hl=zh-cn
+
+
+<center> --- end --- </center>
+
+---

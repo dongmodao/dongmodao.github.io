@@ -98,3 +98,8 @@ Author: dongmodao
   + gravity与layout_gravity:前者是View内部内容的布局位置、后者是布局在父布局的位置
 
 待续---2018年5月30日23点52分
+
+
+<center> --- end --- </center>
+
+---

@@ -10,7 +10,7 @@ Author: dongmodao
 
 ---
 
-![](/Android-Making-new-view/index.jpg)
+![](Android-Making-new-view/index.jpg)
 
 ## 自定义控件
 
@@ -65,7 +65,7 @@ Author: dongmodao
   6. 设置监听、事件
 
 
-参考：
+###### 参考：
  1. [自定义 View][1]
  2. [Android自定义View 雷达扫描效果][2]
 

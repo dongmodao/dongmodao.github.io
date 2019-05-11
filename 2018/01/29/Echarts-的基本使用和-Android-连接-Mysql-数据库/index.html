@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1"/>
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="好久好久没有更新博客了。。。 大学生活中的最后一个假期如期而至，这次回家好像比往常有更多学习的心思，可能时因为下学期准备毕业，准备找工作的原因？好像也不是很强烈。不过，回家一个人也是好无聊的样子，于是今天写了一些东西，虽然都是比较简单的东西吧。">
+<meta name="keywords" content="Echarts,Mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Echarts 的基本使用和 Android 连接 Mysql 数据库">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/index.html">
+<meta property="og:site_name" content="dongmodao&#39;s Blog">
+<meta property="og:description" content="好久好久没有更新博客了。。。 大学生活中的最后一个假期如期而至，这次回家好像比往常有更多学习的心思，可能时因为下学期准备毕业，准备找工作的原因？好像也不是很强烈。不过，回家一个人也是好无聊的样子，于是今天写了一些东西，虽然都是比较简单的东西吧。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/tower.jpg">
+<meta property="og:updated_time" content="2019-05-11T10:58:00.513Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Echarts 的基本使用和 Android 连接 Mysql 数据库">
+<meta name="twitter:description" content="好久好久没有更新博客了。。。 大学生活中的最后一个假期如期而至，这次回家好像比往常有更多学习的心思，可能时因为下学期准备毕业，准备找工作的原因？好像也不是很强烈。不过，回家一个人也是好无聊的样子，于是今天写了一些东西，虽然都是比较简单的东西吧。">
+<meta name="twitter:image" content="http://yoursite.com/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/tower.jpg">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Echarts 的基本使用和 Android 连接 Mysql 数据库 | dongmodao's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">dongmodao's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类<span class="badge">2</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档<span class="badge">23</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签<span class="badge">19</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="dongmodao"/>
+      <meta itemprop="description" content="有善始者实繁 能克终者盖寡"/>
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dongmodao's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Echarts 的基本使用和 Android 连接 Mysql 数据库
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-01-29 19:24:46" itemprop="dateCreated datePublished" datetime="2018-01-29T19:24:46+08:00">2018-01-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-05-11 18:58:00" itemprop="dateModified" datetime="2019-05-11T18:58:00+08:00">2019-05-11</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/tower.jpg" alt=""></p>
+<p>好久好久没有更新博客了。。。</p>
+<p>大学生活中的最后一个假期如期而至，这次回家好像比往常有更多学习的心思，可能时因为下学期准备毕业，准备找工作的原因？好像也不是很强烈。不过，回家一个人也是好无聊的样子，于是今天写了一些东西，虽然都是比较简单的东西吧。<a id="more"></a></p>
+<p>进入了少网络的环境下，更容易专注于做一些事情。今天下午做了一些在 Android 中使用 Echarts 和连接 Mysql 数据库的尝试。其实也是之前答应了朋友要和他一起做一个 App 的原因。趁着无聊就来学习一下。</p>
+<h2 id="使用-Echarts"><a href="#使用-Echarts" class="headerlink" title="使用 Echarts"></a>使用 Echarts</h2><h3 id="Echarts-是什么"><a href="#Echarts-是什么" class="headerlink" title="Echarts 是什么"></a>Echarts 是什么</h3><p>Echarts 是由百度公司开发的一个轻量级的可以轻松实现直观、可交互、高度自定义图表和可视化的 canvas 库，基于 zrender 和轻量级的 JavaScript 语言。其官方网址为 <a href="https://echarts.baidu.com" target="_blank" rel="noopener">Echarts</a>，在这里就不再多说，官网比我说的更加详细。</p>
+<h3 id="使用-Echarts-附加-JS-和-Android-应用的交互"><a href="#使用-Echarts-附加-JS-和-Android-应用的交互" class="headerlink" title="使用 Echarts (附加 JS 和 Android 应用的交互)"></a>使用 Echarts (附加 JS 和 Android 应用的交互)</h3><p>先从官网中下载最新的版本，<a href="https://echarts.baidu.com/tutorial.html" target="_blank" rel="noopener">戳这里</a>，同时还有如何操作的介绍。随后引入 Echarts，使用 echarts.init 方法初始化一个实例，使用 setOption 方法生成图表。如下是一个简单的示例：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">style</span>=<span class="string">"height: 100%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">style</span>=<span class="string">"height: 100%; margin: 0"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span> <span class="attr">style</span>=<span class="string">"height: 100%"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">       var dom = document.getElementById("container");</span></span><br><span class="line"><span class="undefined">       var myChart = echarts.init(dom);</span></span><br><span class="line"><span class="undefined">       var option = &#123;</span></span><br><span class="line"><span class="undefined">              title:&#123;</span></span><br><span class="line"><span class="undefined">                     text:'入门示例'</span></span><br><span class="line"><span class="undefined">              &#125;,</span></span><br><span class="line"><span class="undefined">              tooltip:&#123;&#125;,</span></span><br><span class="line"><span class="undefined">              legend:&#123;</span></span><br><span class="line"><span class="undefined">                     data:['销量']</span></span><br><span class="line"><span class="undefined">              &#125;,</span></span><br><span class="line"><span class="undefined">              xAxis:&#123;</span></span><br><span class="line"><span class="undefined">                     data:["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]</span></span><br><span class="line"><span class="undefined">              &#125;,</span></span><br><span class="line"><span class="undefined">              yAxis:&#123;&#125;,</span></span><br><span class="line"><span class="undefined">              series:[&#123;</span></span><br><span class="line"><span class="undefined">                     name:'销量',</span></span><br><span class="line"><span class="undefined">                     type:'bar',</span></span><br><span class="line"><span class="undefined">                     data:[5, 20, 36, 10, 15, 20]</span></span><br><span class="line"><span class="undefined">              &#125;]</span></span><br><span class="line"><span class="undefined">       &#125;;</span></span><br><span class="line"><span class="undefined">       myChart.setOption(option);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>概括来说就是先获取一个实例，生成一个对应的 option，使用 setOption 方法，成图，over！</p>
+<p>今天还涉及一个部分就是动态加载数据的问题，需要在手机上点击之后更改图表，所以使用一个 JavaScript 函数来实现，在上述代码中自定义的 JavaScript 脚本部分加入如下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calljs</span>(<span class="params">data</span>)</span>&#123;		<span class="comment">// 函数记得加 function 关键字</span></span><br><span class="line">    <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementById(<span class="string">"container"</span>);</span><br><span class="line">	<span class="keyword">var</span> myChart = echarts.init(dom);</span><br><span class="line">	<span class="comment">// 获取横纵数据</span></span><br><span class="line">	<span class="keyword">var</span> xList = data.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> item[<span class="number">0</span>];</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">var</span> valueList = data.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> item[<span class="number">1</span>];</span><br><span class="line">	&#125;);</span><br><span class="line">    <span class="keyword">var</span> option = &#123;</span><br><span class="line">	title:&#123;</span><br><span class="line">		text:<span class="string">'入门示例'</span></span><br><span class="line">	&#125;,</span><br><span class="line">	tooltip:&#123;&#125;,</span><br><span class="line">	legend:&#123;</span><br><span class="line">		data:[<span class="string">'销量'</span>]</span><br><span class="line">	&#125;,</span><br><span class="line">	xAxis:&#123;</span><br><span class="line">		data:xList</span><br><span class="line">	&#125;,</span><br><span class="line">	yAxis:&#123;&#125;,</span><br><span class="line">	series:[&#123;</span><br><span class="line">		name:<span class="string">'销量'</span>,</span><br><span class="line">		type:<span class="string">'bar'</span>,</span><br><span class="line">		data:valueList</span><br><span class="line">	&#125;]</span><br><span class="line">&#125;;</span><br><span class="line">myChart.setOption(option);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后在 Android App 中加入如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String data = <span class="string">"[[\"衬衫\",5],[\"羊毛衫\",20],[\"雪纺衫\",36],[\"裤子\",10],[\"高跟鞋\",15],[\"袜子\",20]]"</span>;</span><br><span class="line">webView.loadUrl(MessageFormat.format(<span class="string">"javascript:calljs(&#123;0&#125;)"</span>, data));	<span class="comment">// 以参数 data 执行脚本方法 calljs。不必新开线程，webView 自动在子线程中使用</span></span><br></pre></td></tr></table></figure></p>
+<p>以上是我今天需要使用的部分，关于 Android 和 JS 的交互，可以移步<a href="http://blog.csdn.net/carson_ho/article/details/64904691" target="_blank" rel="noopener">Android：你要的 WebView 与 JS 交互方式都在这里了</a>查看。</p>
+<h2 id="连接-Mysql-数据库"><a href="#连接-Mysql-数据库" class="headerlink" title="连接 Mysql 数据库"></a>连接 Mysql 数据库</h2><p>下午的另一个事情就是连接 MySQL 数据库，并读取信息。实现步骤如下：</p>
+<ol>
+<li>下载 MySQL 和 Java 连接器的包，如我使用的是 mysql-connector-java-5.1.28.jar。</li>
+<li>主要代码如下，如果提示使用 try/catch 的，请自行添加，此处把流程过一遍：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">String DRIVER = <span class="string">"com.mysql.jdbc.Driver"</span>;</span><br><span class="line">String USER = <span class="string">"username"</span>;</span><br><span class="line">String PASS = <span class="string">"password"</span>;</span><br><span class="line">String URL = <span class="string">"jdbc:mysql://123.207.110.110:3306/yourDBName"</span>;</span><br><span class="line">String sql = <span class="string">"select * from ......"</span></span><br><span class="line">Class.forName(DRIVER)</span><br><span class="line">Connection connection = DriverManager.getConnection(URL, USER, PASS);</span><br><span class="line">Statement statement = connection.createStatement();</span><br><span class="line">ResultSet resultSet = statement.executeQuery(sql);</span><br><span class="line"><span class="keyword">while</span>(resultSet.next())</span><br><span class="line">&#123;</span><br><span class="line">	String param1 = resultSet.getString(<span class="number">1</span>);		<span class="comment">// 读取记录，记录初始字段从 1 开始，不是从 0 开始</span></span><br><span class="line">	<span class="comment">// Todo: anything...</span></span><br><span class="line">&#125;</span><br><span class="line">resultSet.close();</span><br><span class="line">statement.close();</span><br><span class="line">connection.close();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上面的操作，有比较多的是要在子线程中实现的，如 getConnection 和 executeQuery。另外，要在读取结束之后再关闭连接，注意顺序，否之会报错。反正，报错了看是什么错误，解决一下应该都没问题。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这其实是在假期写的文章，结果没有后续，留到现在才发布…[2018年3月4日 09点32分]</p>
+<center> — end — </center>
+
+<hr>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Echarts/" rel="tag"># Echarts</a>
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+              <div>
+                
+
+<script src="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/ilyabirman-likely@2/release/likely.css">
+
+
+  
+
+
+<div class="likely">
+	
+ 	 	<div class="twitter">Tweet</div>
+	
+ 	 	<div class="facebook">Share</div>
+	
+ 	 	<div class="linkedin">Link</div>
+	
+ 	 	<div class="gplus">Plus</div>
+	
+ 	 	<div class="vkontakte">Share</div>
+	
+ 	 	<div class="odnoklassniki">Class</div>
+	
+ 	 	<div class="telegram">Send</div>
+	
+ 	 	<div class="whatsapp">Send</div>
+	
+ 	 	<div class="pinterest">Pin</div>
+	
+</div>
+
+              </div>
+            
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/17/使用-LitePal-操作数据库/" rel="next" title="使用 LitePal 操作数据库">
+                <i class="fa fa-chevron-left"></i> 使用 LitePal 操作数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/07/Android-广播机制与服务/" rel="prev" title="Android 广播机制与服务">
+                Android 广播机制与服务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400"
+                alt="dongmodao"/>
+            
+              <p class="site-author-name" itemprop="name">dongmodao</p>
+              <div class="site-description motion-element" itemprop="description">有善始者实繁 能克终者盖寡</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/dongmodao" title="GitHub &rarr; https://github.com/dongmodao" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:tangqihaopku@gmail.com" title="E-Mail &rarr; mailto:tangqihaopku@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Echarts"><span class="nav-number">1.</span> <span class="nav-text">使用 Echarts</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Echarts-是什么"><span class="nav-number">1.1.</span> <span class="nav-text">Echarts 是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Echarts-附加-JS-和-Android-应用的交互"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Echarts (附加 JS 和 Android 应用的交互)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接-Mysql-数据库"><span class="nav-number">2.</span> <span class="nav-text">连接 Mysql 数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">2.1.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongmodao</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.6.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.1.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.1.1"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.1.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').not('.gist .highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

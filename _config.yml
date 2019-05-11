@@ -5,7 +5,7 @@
 # Site
 title: dongmodao's Blog
 subtitle:
-description: 'Stay Hungry, Stay Foolish.'
+description: '有善始者实繁 能克终者盖寡'
 author: dongmodao
 language: zh-Hans
 timezone:
@@ -43,7 +43,7 @@ highlight:
   enable: true
   line_number: true
   auto_detect: false
-  tab_replace:
+  tab_replace: false
 
 # Category & Tag
 # default_category: uncategorized
@@ -66,7 +66,8 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+# theme: next
+theme: next-reloaded
 #theme: landscape
 #theme: hux
 

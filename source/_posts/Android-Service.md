@@ -4,11 +4,6 @@ date: 2018-06-09 20:23:49
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](Android-Service/index.jpg)
 

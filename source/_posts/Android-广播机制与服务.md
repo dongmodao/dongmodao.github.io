@@ -4,11 +4,7 @@ date: 2018-03-07 17:54:23
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
----
 
 ![](Android-广播机制与服务/main-img.jpg "image from Momentum")
 
@@ -99,7 +95,7 @@ Author: dongmodao
  主要的代码入下：
  ``` java
          class MyService extends Service{
-            
+
             private MyBinder myBinder = new MyBinder();
 
             class MyBinder extends Binder{
@@ -108,14 +104,14 @@ Author: dongmodao
                     return 0;
                 }
             }
-            
+
             @Nullable
             @Override
             public IBinder onBind(Intent intent) {
                 return myBinder;
             }
         }
-        
+
         // 创建 ServiceConnection 匿名类，并重写两个方法，分别用于连接服务时和断开服务时
         private ServiceConnection connection = new ServiceConnection() {
             @Override

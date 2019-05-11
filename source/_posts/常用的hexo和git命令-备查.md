@@ -4,11 +4,7 @@ date: 2017-03-10 10:03:04
 tags: [hexo,git]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
----
 ![](常用的hexo和git命令-备查/beautyhouse.jpg)
 
 ### 写在前面

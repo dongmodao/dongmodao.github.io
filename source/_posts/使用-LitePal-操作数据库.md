@@ -4,9 +4,6 @@ date: 2017-09-17 02:06:23
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
 ![](使用-LitePal-操作数据库/night.jpg)
 

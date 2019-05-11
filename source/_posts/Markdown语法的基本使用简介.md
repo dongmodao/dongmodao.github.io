@@ -4,9 +4,6 @@ date: 2017-03-04 08:58:43
 tags: [Markdown, 写作]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
 ![](Markdown语法的基本使用简介/beautifulnature.jpg)
 

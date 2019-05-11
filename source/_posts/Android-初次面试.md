@@ -4,11 +4,6 @@ date: 2018-06-26 22:28:00
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](Android-初次面试/index.jpg)
 

@@ -4,11 +4,6 @@ date: 2018-05-30 23:56:19
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](Android-Day-1/index.jpg)
 

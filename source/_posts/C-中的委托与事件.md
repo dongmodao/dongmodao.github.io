@@ -4,11 +4,7 @@ date: 2017-05-28 01:06:16
 tags: [C#, 委托, 事件]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
----
 ![](C-中的委托与事件\water.jpg)
 ## 委托与事件
 

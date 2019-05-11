@@ -4,11 +4,6 @@ date: 2018-06-07 23:21:31
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](Android-Making-new-view/index.jpg)
 

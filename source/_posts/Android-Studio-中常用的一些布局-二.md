@@ -4,9 +4,6 @@ date: 2017-04-02 21:00:03
 tags: [Android Studio, 布局]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
 ![](Android-Studio-中常用的一些布局-二/sea.jpg)
 

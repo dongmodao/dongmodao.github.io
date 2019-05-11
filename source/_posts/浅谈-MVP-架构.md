@@ -4,11 +4,6 @@ date: 2017-04-07 11:49:45
 tags: [MVP]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](浅谈-MVP-架构/beautiful-nature-images.jpg)
 

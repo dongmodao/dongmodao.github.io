@@ -4,9 +4,6 @@ date: 2017-04-22 15:07:19
 tags: [Java 回调机制]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
 ![](java-回调机制的使用/nature-images.jpg)
 

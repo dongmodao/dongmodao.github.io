@@ -4,11 +4,6 @@ date: 2018-11-24 14:59:31
 tags: [Android]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
-
----
 
 ![](Android-N-以上使用其他应用打开文件-FileProvider/index.jpg)
 

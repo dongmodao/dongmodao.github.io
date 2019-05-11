@@ -4,9 +4,6 @@ date: 2017-04-16 21:30:28
 tags: [Android Studio, 布局]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
 ![](Android-Studio-中常用的一些布局-三/naturetree.jpg)
 

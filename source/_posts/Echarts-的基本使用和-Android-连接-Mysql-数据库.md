@@ -4,11 +4,7 @@ date: 2018-01-29 19:24:46
 tags: [Echarts, Mysql]
 categories: [技术]
 ---
-<center>
-Author: dongmodao
-</center>
 
----
 ![](Echarts-的基本使用和-Android-连接-Mysql-数据库/tower.jpg)
 
 好久好久没有更新博客了。。。
@@ -135,4 +131,3 @@ connection.close();
 <center> --- end --- </center>
 
 ---
-

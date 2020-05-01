@@ -69,7 +69,7 @@ pagination_dir: page
 # theme: next
 # theme: next-reloaded
 # theme: Hacker
-theme: gh-next
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

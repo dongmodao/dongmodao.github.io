@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Android Day 1</title>
+    <url>/2018/05/30/Android-Day-1/</url>
+    <content><![CDATA[<p><img src="/2018/05/30/Android-Day-1/index.jpg" alt></p>
+<h3 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h3><p>一种包含用户界面的组件，主要用于和用户进行交互。</p>
+<h4 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h4><ul>
+<li>extends AppCompatActivity</li>
+<li>onCreate() // 重写方法</li>
+<li>setContentView(R.layout.layout_name) //加载布局</li>
+<li>AndroidManifest, <activity android:name=".Activity_Name">  //注册</activity></li>
+<li>finsh()      // 销毁活动 <a id="more"></a><h4 id="Menu"><a href="#Menu" class="headerlink" title="Menu"></a>Menu</h4></li>
+</ul>
+<ol>
+<li>res-&gt;New-&gt;Directory-&gt;menu, New-&gt;Menu resource file-&gt;file_name;建立menu的xml文件。</li>
+<li>Activity 中重写 onCreateOptionsMenu(), getMenuInflater().inflate(menu_xml);</li>
+<li>重写 onOptionsItemSelected()</li>
+</ol>
+<h4 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h4><ol>
+<li><p>显示 Intent</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Context, Activity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>隐式 Intent</p>
+<ul>
+<li><p>筛选器</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"activity_name.ACTION_START"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>startActivity</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="string">"activity_name.ACTION_START"</span>); <span class="comment">// 选择intent</span></span><br><span class="line"><span class="comment">//intent.addCategory("category_value");</span></span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用于启动其他应用，网页、电话、其他应用，使用intent.setData()方法，还可以配置data标签。</p>
+</li>
+</ul>
+</li>
+<li><p>传递数据，intent.putExtra(“KEY”, value);</p>
+</li>
+<li><p>返回数据， startActivityForResult(intent, 1);//1 为请求码；在另一个Activity中使用 setResult(RESULT_OK, intent) //RESULT_CANCELED；重写本Activity 的 onActivityResult();</p>
+</li>
+</ol>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><p>返回栈（Back Stack）管理，新开Activity入栈，退出出栈，总是显示栈顶Activity。</p>
+<ol>
+<li><p>状态：活动（活动）、暂停、停止、销毁共四种状态，对应处于栈顶、非栈顶但可见、非栈顶完全不可见、从栈中移除这四种实质。</p>
+</li>
+<li><p>活动周期：完全生存期、可见生存期、前台生存期，对应onCreate()-&gt;onDestroy()、onStart()-&gt;onStop()、onResume()-&gt;onPause()三个过程。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+ onCreate():活动第一次创建时调用，初始化，加载布局、绑定事件</span><br><span class="line">+ onStart():不可见转为可见状态时调用</span><br><span class="line">+ onResume():活动准备好与用户交互式使用，处于栈顶，运行状态</span><br><span class="line">+ onPause():准备启动或恢复另一活动时使用，用于释放资源、保存数据。要求执行速度快，否则影响新栈顶活动使用</span><br><span class="line">+ onStop():完全不可见时调用，onPause()在部分可见就执行，而onStop()需要完全不可见，如对话框时不执行，onPause()执行</span><br><span class="line">+ onDestroy():活动销毁之前执行，随后销毁。</span><br><span class="line">+ onRestart():停止状态到运行状态时之前调用</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回收活动的恢复：使用onSaveInstanceState()方法，用于保存数据，键值对方式，传入Buldle对象，使用putString()等Bulder实例的putDataType()方式保存。在onCreate()中检查传入的Budle saveInstanceState()参数是否为null。</p>
+</li>
+</ol>
+<h4 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h4><ol>
+<li>standard、singleTop、singleTask、singleInstance，在AndroidManifest中<code>&lt;activity&gt;</code>标签下使用android:launchMode属性选择。<ul>
+<li>standard：默认启动方式，启动则会在返回栈顶生成新的活动</li>
+<li>singleTop:栈顶时该活动时不能重新生成，不处于栈顶时可重新生成</li>
+<li>singleTask：每次启动检查返回栈中是否有，如果有则不启动，而是将其上的活动移除，使用已有实例，没有时新建</li>
+<li>singleInstance：启用一个新的返回栈管理活动。如与其他程序共享同一个活动或者调用，不管哪个应用访问活动，共用一个返回栈（新的）。只有标记了singleInstance的活动才会入新栈，随后生成的活动还是返回到原始栈。</li>
+</ul>
+</li>
+</ol>
+<h3 id="基础UI"><a href="#基础UI" class="headerlink" title="基础UI"></a>基础UI</h3><ol>
+<li>基础中的基础：TextView、Button、EditText(hint,maxLines)、ImageView(src)、ProgressBar(style[更改显示样式，圆形，水平进度条]、setProgress(int))</li>
+<li>AlertDialog、ProgressDialog：通过代码实现<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">AlertDialog.Builder dialog = <span class="keyword">new</span> AlertDialog.Builder(Context);</span><br><span class="line"><span class="comment">//设置标题、信息、设置点击两个按钮的监听setPositiveButton("OK", new DialogInterface.OnClickListener()&#123;&#125;)与setNegative("Cancel", new Dialog)</span></span><br><span class="line">dialog.show();</span><br><span class="line"></span><br><span class="line">ProgressDialog progressdialog = <span class="keyword">new</span> ProgressDialog(Context);<span class="keyword">abstract</span><span class="comment">// 设置标题、返回键关闭等</span></span><br><span class="line">progressdialog.show();</span><br><span class="line"><span class="comment">// 绑定事件监听、使用dismiss()关闭</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h4><ol>
+<li>四大基本布局：线型布局(LinearLayout)、相对布局(RelativeLayout)、帧布局(FrameLayout)、百分比布局(PercentFrameLayout)。<ul>
+<li>线型布局：orientation、layout_weight</li>
+<li>相对布局：layout_alignParent[Left/Top/…]、layout_to[Left/Top/…]Of</li>
+<li>帧布局：内部元素默认在左上角</li>
+<li>百分比布局：’com.android.support:percent:version’、app:layout_[width/height]Percent</li>
+<li>gravity与layout_gravity:前者是View内部内容的布局位置、后者是布局在父布局的位置</li>
+</ul>
+</li>
+</ol>
+<p>待续—2018年5月30日23点52分</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Day 2</title>
+    <url>/2018/06/06/Android-Day-2/</url>
+    <content><![CDATA[<p><img src="/2018/06/06/Android-Day-2/index.jpg" alt></p>
+<h3 id="基础-UI"><a href="#基础-UI" class="headerlink" title="基础 UI"></a>基础 UI</h3><h4 id="自定义控件"><a href="#自定义控件" class="headerlink" title="自定义控件"></a>自定义控件</h4><ol>
+<li>组合/继承控件<ul>
+<li>写布局 xml 文件</li>
+<li>使用 LayoutInflater.from(Context).inflate(layout_id, parent_layout[this])</li>
+<li>重写事件等</li>
+</ul>
+</li>
+<li>完全自定义 View<a id="more"></a></li>
+</ol>
+<h4 id="重要控件"><a href="#重要控件" class="headerlink" title="重要控件"></a>重要控件</h4><ol>
+<li><p>ListView</p>
+<ul>
+<li>生成数据数组</li>
+<li>创建内容类型，设置 get/set</li>
+<li>创建每个子项的布局 layout</li>
+<li>创建自定义 Adapter (可继承于自带 Adapter，如 ArrayAdapter<bean>)</bean></li>
+<li>实现构造函数</li>
+<li>重写 getView 方法，加载布局，设置控件内容，返回 View</li>
+<li>重用缓存 convertView 参数。getView 中判断是否为 null，是则加载布局，否则操作返回</li>
+<li>使用 ViewHolder，将布局中的 View 交予其管理。可结合 View 的 set/getTag 存储/管理/重用 ViewHolder。</li>
+<li>setOnItemClickListener(new AdapterView.OnItemClickListener(){}),子项点击监听</li>
+</ul>
+</li>
+<li><p>RecyclerView</p>
+<ul>
+<li><p>加入引用 “com.android.support:recyclerview-v7:{version}”,引入布局</p>
+</li>
+<li><p>[基本步骤与 ListView 相似，不提] 创建自定义适配器 BeanAdapter：</p>
+</li>
+<li><p>继承与 RecyclerView.Adapter&lt;BeanAdapter.ViewHolder&gt;，内部类 ViewHolder</p>
+</li>
+<li><p>ViewHolder extends RecyclerView.ViewHolder。管理/绑定子项 View，构造时绑定 view_id</p>
+</li>
+<li><p>构造函数引入数据</p>
+</li>
+<li><p>重写 onCreateViewHolder()，加载布局，设定子 View 监听等，返回 ViewHolder</p>
+</li>
+<li><p>重写 onBindViewHolder()，子项绑定 ViewHolder，所以获取 Bean 实例，通过 ViewHolder 管理 View</p>
+</li>
+<li><p>重写 getItemCount()，返回数据总数量</p>
+</li>
+<li><p>使用 [Linear/StaggeredGrid/…]LayoutManager 管理 RecyclerView 的子项布局方式，使用setLayoutManager()，可对 layoutManager 进行各项定义</p>
+</li>
+<li><p>setAdapter() 设置适配器</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>9-Patch 图设定：<a href="https://developer.android.com/studio/write/draw9patch?hl=zh-cn" target="_blank" rel="noopener">创建可调整大小的位图（9-Patch 文件）</a></p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android: 自定义 View</title>
+    <url>/2018/06/07/Android-Making-new-view/</url>
+    <content><![CDATA[<p><img src="/2018/06/07/Android-Making-new-view/index.jpg" alt></p>
+<h2 id="自定义控件"><a href="#自定义控件" class="headerlink" title="自定义控件"></a>自定义控件</h2><p>今天来学习以下自定义控件的绘制流程，使用的是一个在 GitHub 上开源的项目：雷达图扫描效果，进行了练手。本文说来算是一个简单版本的总结，内容主要来源见文末的参考文献。</p>
+<h3 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h3><ol>
+<li><p>继承自 View 或者 View 的子类<br>至少使用一个构造函数，包含 Context 和 AttributeSet 对象，作用为允许 layout editor 创建并编辑 View 实例。<a id="more"></a></p>
+</li>
+<li><p>定义自定义属性</p>
+<ul>
+<li><p>在资源标签下定义自设的属性，在 res/values/attrs.xml 中进行定义</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">declare-styleable</span> <span class="attr">name</span>=<span class="string">"ViewName"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"attr_name"</span> <span class="attr">format</span>=<span class="string">"data_type"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"position"</span> <span class="attr">format</span>=<span class="string">"enum"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enum</span> <span class="attr">name</span>=<span class="string">"left"</span> <span class="attr">value</span>=<span class="string">"0"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enum</span> <span class="attr">name</span>=<span class="string">"right"</span> <span class="attr">value</span>=<span class="string">"1"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">attr</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">declare-styleable</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 layout xml 中指定属性值，在引用自定义 View 时，需要指定命名空间，如 xmlns:custom=”<a href="http://schemas.android.com/apk/res/{View_package}&quot;" target="_blank" rel="noopener">http://schemas.android.com/apk/res/{View_package}&quot;</a></p>
+</li>
+<li><p>在运行是获取属性值</p>
+</li>
+<li><p>应用属性值到 View 中</p>
+</li>
+</ul>
+</li>
+<li><p>使用自定义属性<br>View 被创建时，使用构造器时，从 xml 中读取，保存到 AttributeSet 中，可从中读取，弊端在于拥有属性的资源没有经过解析，Styles 并没有运用上。不能确定值的类型。所以使用 obtainStyleAttributes() 来获取属性值，方法传递一个 TypedArray 对象，间接引用并经过 Styles 应用的。如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">TypedArray a = context.getTheme().obtainStyleAttributes(attrs, R.styleable.ViewName, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">mAttr_1 = a.getBoolean(R.styleable.attr_name, default_value);</span><br><span class="line">a.recycle();   <span class="comment">// 共享资源对象要进行回收</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加属性和事件<br>使用合适的 getter 和 setter 方法。当 View 的内容发生变化时，需要调用 invalidate() 和 requestLayout() 方法来进行内容和大小的处理，没有则容易报错。自定义 View 需要能够响应事件的监听器，可自己设定事件来通知监听器。暴露属性和事件时非常重要的。</p>
+</li>
+<li><p>重写 onMeasure()<br>这个方法用于测量和设置控件的大小。使用 setMeasuredDimension(width, height) 设置大小，其中 width 和height 则需要计算出来。</p>
+</li>
+<li><p>重写 onDraw()<br>参数为一个 Canvas 对象，该对象定义了绘制图像图形的方法，绘制之前需要创建一个 Paint 对象。其中 Canvas 用于定义绘制什么，Paint 定义如何绘制。如使用 canvas.drawCircle() 的方法进行画圆，其中参数中使用了 Paint 的实例。当需要重绘时需要调用 invalidate() 方法，更改大小时需要调用 requestLayout() 方法。</p>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p> 总的来说，自定义控件要经过以下几个步骤：</p>
+<ol>
+<li>新建继承自 View 或其子类的 Class，并根据需要实现带参数的几种构造函数，构造的同时可能使用 <code>TypedArray t = context.obtainStyleAttributes(attrs, R.styleabe.ViewName);</code> 获取从布局 xml 中获取属性值。可以初始化画布 Canvas 和画笔 Paint。</li>
+<li>在资源标签中定义本 View 自定义的属性，设置类型。</li>
+<li>重写 onMeasure() 方法，设置控件的尺寸。</li>
+<li>重写 onDraw() 方法，绘制控件，如需要数据，则提供获取数据的方式。</li>
+<li>更改内容或者大小时，需要调用 invalidate() 或 requestLayout() 方法。</li>
+<li>设置监听、事件</li>
+</ol>
+<h6 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h6><ol>
+<li><a href="http://hukai.me/android-training-course-in-chinese/ui/custom-view/index.html" target="_blank" rel="noopener">自定义 View</a></li>
+<li><a href="https://github.com/donkingliang/RadarView" target="_blank" rel="noopener">Android自定义View 雷达扫描效果</a></li>
+</ol>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android N 以上使用其他应用打开文件 FileProvider</title>
+    <url>/2018/11/24/Android-N-%E4%BB%A5%E4%B8%8A%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6-FileProvider/</url>
+    <content><![CDATA[<p><img src="/2018/11/24/Android-N-以上使用其他应用打开文件-FileProvider/index.jpg" alt></p>
+<p>  又是好长一段时间没有写东西了，说忙到没有时间写东西，这个说法在任何时候都是借口。总的来说还是没有写，真的要写的话还是有时间来写的，不说成为一个高产的人吧，但是稍微写一些的时间还是有的，再不济也可以分开到很多天再来写的吧。所以说这到头来还是个人的问题，没有主动有意识的去写这些东西，没有有意识的去学习去分享。这也在一定程度上说自己这段时间主动学习的时间少了。无论如何，还是要好好学习的，虽然已经不再学校，但从另一个角度来说自己应该更能明白知识的重要性。所以以后要多加注意主动学习。<a id="more"></a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  Android 在很多时候需要使用本地的文件，除了需要使用到读写外部存储文件权限之外，有时候还需要使用到内容提供器：ContentProvider。说到这里我真的感叹 Android 开发的混乱，需要使用到各种适配。比如 Android 随着版本的变化带来的 API 的变化，不同生产商自定义的 Android 的功能，不同手机不同屏幕尺寸的适配。总之这就带来了很多问题，原本在这个手机上运行好好的程序到另一个手机上却是 cash 了，十分的蛋疼。这次要说的是对于文件的处理差异，主要涉及的是文件 Uri 的处理。此处以 Android N 为分界，SDK_INT &lt; N 归为一种情况，另外是一种情况。</p>
+<h3 id="API-lt-24"><a href="#API-lt-24" class="headerlink" title="API &lt; 24"></a>API &lt; 24</h3><p> <code>Uri uri = Uri.fromFile(file)</code></p>
+<p> 在 Android N 也就是 Android 7.0 之前使用上面这个方法是完全没有问题的，比如</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">File file = <span class="keyword">new</span> File(path);     <span class="comment">// path 是外部存储中的一个图片的路径</span></span><br><span class="line">Uri uri = Uri.fromFile(file);</span><br><span class="line">intent.setDataAndType(uri, <span class="string">"image/*"</span>);</span><br><span class="line">startActivity(Intent.createChooser(intent, <span class="keyword">null</span>));</span><br></pre></td></tr></table></figure>
+
+<p>这个方法可以调用系统中支持打开图片的应用让用户选择并打开对应的图片，而没有任何问题。当时事情到了 7.0 之后就不一样了，这个方法会抛出一个 FileUriExposedException 的异常。</p>
+<h3 id="API-gt-24"><a href="#API-gt-24" class="headerlink" title="API &gt;= 24"></a>API &gt;= 24</h3><p>  <code>Uri uri = FileProvider.getUriForFile(context, athorty_key, file)</code></p>
+<p>  从 7.0 之后提高了文件的安全性，就需要用上述的方法来获取文件的 Uri。总共分为这几步。</p>
+<ol>
+<li><p>在 AndroidManifest.xml 中定义 FileProvider 如下</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">"android.support.v4.content.FileProvider"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:authorities</span>=<span class="string">"$&#123;applicationId&#125;.fileprovider"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:grantUriPermissions</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:name</span>=<span class="string">"android.support.FILE_PROVIDER_PATHS"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:resource</span>=<span class="string">"@xml/provider_paths"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 name, exported, grantUriPermissions 的值不能改变，authorities 则是在使用 getUriForFile() 方法的第二个参数，用于标识与验证。</p>
+</li>
+<li><p>添加 @xml/provider_paths 资源如下</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">paths</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">external-path</span> <span class="attr">name</span>=<span class="string">"external_files"</span> <span class="attr">path</span>=<span class="string">"."</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">paths</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 name 的值会在构成的 uri 中出现，用于隐藏实际的路径，增加安全性；path 则表示文件的读取路径，此处是表示外部存储中的所有文件路径，当然你可以指定为某一个文件夹，比如”image/“,则只有这个文件夹下的文件能正常访问，其他的文件夹不行；至于 <code>external-path</code> 标签则是表示这个提供的是外部存储的读取，如果你需要读取缓存路径或者其他的路径的文件的 uri 则必须要添加对应的标签值。有哪些标签可以去官方看。</p>
+</li>
+<li><p>使用  Uri uri = FileProvider.getUriForFile(context, athorty_key, file); 把文件转换成 Uri。如</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">File imagePath = <span class="keyword">new</span> File(Context.getFilesDir(), <span class="string">"images"</span>);</span><br><span class="line">File newFile = <span class="keyword">new</span> File(imagePath, <span class="string">"default_image.jpg"</span>);</span><br><span class="line">Uri contentUri = getUriForFile(getContext(), <span class="string">"com.mydomain.fileprovider"</span>, newFile);   <span class="comment">// 官方示例</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果分享到其他应用，还需要进行授权。需要给目标应用添加读取 uri 的权限。</p>
+<ul>
+<li>使用  Context.grantUriPermission(package, Uri, mode_flags) 给特定的应用包添加读写权限，mode_flags 包括 FLAG_GRANT_READ_URI_PERMISSION 和 FLAG_GRANT_WRITE_URI_PERMISSION，可以都添加，分别是读和写 Uri 的权限。授权期限到重启设备或者使用 revokeUriPermission() 取消权限为止。</li>
+<li>除上面的方法之外，也可以使用在自己的要使用的 Intent 中加入这个权限，比如有一个 Intent 为 intent，调用 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); 则使用该 intent 的应该可以读取 uri，但下次还需要添加才行。</li>
+</ul>
+</li>
+</ol>
+<p>所以上面的那个分享的方式可以写成如下的形式来调用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">File file = <span class="keyword">new</span> File(path);     <span class="comment">// path 是外部存储中的一个图片的路径</span></span><br><span class="line">Uri uri;</span><br><span class="line"><span class="keyword">if</span> (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.N) &#123;</span><br><span class="line">    uri = Uri.fromFile(file);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);</span><br><span class="line">    uri = FileProvider.getUriForFile(content, authorities, file);</span><br><span class="line">&#125;</span><br><span class="line">intent.setDataAndType(uri, <span class="string">"image/*"</span>);</span><br><span class="line">startActivity(Intent.createChooser(intent, <span class="keyword">null</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>时隔很久之后才重新写的分享，发现写起来真的废力啊，耗时比预计时间长，自己的打字速度不行啊。总之，以后也要加油啊。本次分享到这里，下一次，写的应该是关于不同 Android 版本的热点和 Wifi 的管理，这里面套路比这个更深啊，汗颜。。。</p>
+<p><strong>链接</strong></p>
+<ol>
+<li><a href="https://developer.android.com/reference/android/support/v4/content/FileProvider" target="_blank" rel="noopener">官方对于 FileProvider 的文档</a>(需要翻墙)</li>
+</ol>
+ <center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Service</title>
+    <url>/2018/06/09/Android-Service/</url>
+    <content><![CDATA[<p><img src="/2018/06/09/Android-Service/index.jpg" alt></p>
+<h3 id="服务-Service"><a href="#服务-Service" class="headerlink" title="服务 Service"></a>服务 Service</h3><p> 在程序后台运行的，不需要和用户交互且要求长期运行的任务，不依赖于用户界面，程序被切换到后台之后仍能正常运行。依赖于应用程序的进程，应用程序进程被杀死时，服务也停止。代码运行于主线程中，需要则考虑自己开线程。<a id="more"></a></p>
+<h4 id="异步处理机制"><a href="#异步处理机制" class="headerlink" title="异步处理机制"></a>异步处理机制</h4><ol>
+<li><p>组成：Message、Handler、MessageQueue、Looper</p>
+<ul>
+<li>Message 用于消息的存取，what、arg1、arg2、obj 等可以存取，</li>
+<li>Handler 则是处理消息，使用 sendMessage() 方法发送消息到 MessageQueue 中，最终传到 Hanlder 的 hanldeMessage() 方法中，以供处理。</li>
+<li>MessageQueue 是消息队列，用于存放 Hander 使用 sendMessage() 发送的 Message，等待 Looper 的提取，处理。每个线程只会有一个 MessageQueue 对象。</li>
+<li>Looper 循环监控 MessageQueue，调用 Looper 的 loop() 发送的消息之后，无限循环，发现 MessageQueue 中有消息时取出给 Hander 调用 handleMessage() 方法。每个线程只有一个 Looper 对象。<br><img src="images/handler.png" alt="异步消息处理机制流程《第一行代码》第二版·郭霖" title="异步消息处理机制流程《第一行代码》第二版·郭霖"></li>
+</ul>
+</li>
+<li><p>AsyncTask 的使用<br>实现原理基于异步处理机制，抽象类，需要子类继承使用，继承时可以使用 3 个泛型参数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Params: 执行 AsyncTask 时需要传入的参数，可用于后台任务</span><br><span class="line">Progress: 后台执行任务时，用于显示进度</span><br><span class="line">Result: 执行完毕之后，如需对结果进行返回，则用于返回</span><br><span class="line"></span><br><span class="line">定义如下：</span><br><span class="line"></span><br><span class="line">class NewTask extends AsyncTask&lt;Void, Integer, Boolean&gt; &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重写 AsyncTask 方法完成任务的定制，主要方法有以下几个：</p>
+<ol>
+<li>onPreExecute(): 会在后台任务执行之前使用， 可以进行 UI 操作，如一些界面上的初始化操作，如进度条对话框。</li>
+<li>doInBackground(Params…): 这个方法的所有代码都会在子线程中执行，处理耗时任务，任务完成时可以通过 return 返回结果，如果 Result 的类型是 Void 则没有返回。不可以进行 UI 操作，但可以调用诸如 publishProgress(Progress…) 方法完成。</li>
+<li>onProgressUpdate(Progress…): 当在后台调用 publishProgress(Progress…) 方法后，这个方法很快被调用，携带的参数就是后台任务中传递过来的。可以进行 UI 的操作。</li>
+<li>onPostExecute(Result): 当在后台执行完毕并通过 return 返回时，调用方法。返回的数据作为参数传递到该方法，可以进行 UI 操作，如提醒结果，关闭对话框等。</li>
+<li>使用 new NewTask().execute(); 来启动这个任务</li>
+</ol>
+<p><strong>注意:</strong> publishProgress() 方法要在 doInBackground() 中调用，才能把执行的进度传到 onProgressUpdate() 中， onProgressUpdate() 才会执行。</p>
+</li>
+</ol>
+<h4 id="服务的基本用法"><a href="#服务的基本用法" class="headerlink" title="服务的基本用法"></a>服务的基本用法</h4><ol>
+<li><p>定义服务<br>从 AS 中右键 New 中定义新的的服务。其中除了命名之外还需要选中 Exported 和 Enabled 两个属性，和广播的属性定义是一样的。AS 会在 AndroidManifest.xml 中自动生成相关代码。</p>
+<p>自定义 NewService 继承自称自 Service 类，要重写一个 onBind() 方法，在 Service 类中时抽象的，需要在子类中实现。</p>
+<p>重写其他和 Service 生命周期有关的方法，比如：onCreate()、onStartCommand()、onDestroy()，分别在服务创建时、每次启动服务时、服务销毁时进行调用。</p>
+</li>
+<li><p>启动与停止<br>借助 Intent 来实现启动和停止。</p>
+<ul>
+<li>在活动中调用 <code>startService(new Intent(this, NewService.class));</code>  进行启动</li>
+<li>同理，使用 <code>stopService(new Intent(this, NewService.class));</code> 来停止</li>
+<li>在 NewService 中，可以使用 stopSelf() 方法停止服务</li>
+</ul>
+<p><strong>注意：</strong> 对于广播和服务等一些比较特殊的类型来说，当子类时内部类时，需要使用 static 修饰。否则将报错： has no zero argument constructor 的错误。</p>
+</li>
+</ol>
+<h4 id="活动和服务的通信"><a href="#活动和服务的通信" class="headerlink" title="活动和服务的通信"></a>活动和服务的通信</h4><p> 使用自定义服务 onBind() 方法进行管理。</p>
+<ol>
+<li>创建自定义绑定类，继承于 Binder，在该类中可以定义了解服务内容需要的方法。</li>
+<li>在 onBind() 中返回这一个绑定类，实现了 IBinder 接口</li>
+<li>使用 ServiceConnection 实例来获取服务 onBind() 中返回的自定义 Binder（需要转型），在该类中可以定义了解服务内容需要的方法。实现了两个接口，分别在活动与服务成功绑定以及接触绑定的时候调用。</li>
+<li>使用 <code>bindService(Intent, ServiceConnection, BIND_AUTO_CREATE);</code> 绑定服务，使用 <code>unbindService(ServiceConnection);</code> 解绑服务。其中 BIND_AUTO_CREATE 表示在霍东阁和服务绑定后自动创建服务而不经过 onStartCommand() 方法。</li>
+<li>绑定之后，可以通过调用自定义的 Binder 类的方法来实现服务执行功能。</li>
+<li>可以和不同的活动进行绑定，返回的是同一个 Binder 实例。</li>
+<li>可以进行借助自定义的 Binder 和 Service 进行通信了。</li>
+</ol>
+<p> <strong>注意</strong></p>
+<p>  服务都会只有一个，当服务都使用了 startService() 和 bindService() 两个方法，需要同时调用 stopService() 和 unbindService() 才能销毁服务，两个条件要都满足。而且如果使用 bindService() 生成、不使用 startService()，则必定是以 unbindService() 销毁；同理，使用 startService() 创建而不适用 bindService()，则必以 stopService() 销毁。两者都使用，则两者都不使用时才销毁，否则服务将一直运行。</p>
+<p>  当使用服务做一些耗时的工作时，主要执行在 onStartCommand() 方法中，所以需要开启子线程进行处理。如果不适用子线程，则代码运行在主线程中，很容易出现 ANR(Application Not Responding) 的情况。</p>
+<p>  可以使用继承自 IntentService 的类来避免复杂操作，该类可简单创建异步、会自动停止的服务。重写 onHandleIntent() 中执行代码则不需要担心 ANR 问题，因为该方法在子线程中运行。</p>
+<h4 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h4><ol>
+<li>startService -&gt; (onCreate) -&gt; onStartCommand -&gt; stopService/stopSelf -&gt; onDestroy</li>
+<li>bindService -&gt; (onCreate) -&gt; onBind -&gt; unbindService -&gt; onDestroy</li>
+<li>每调用一次 startService 就会执行一次 onStartCommand</li>
+</ol>
+<h4 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h4><p> 前台服务与普通服务，有一个图标显示在状态栏，下拉可看到更详细信息，类似于同值效果，防止 GC。使用 PendingIntent，Notification 等。使用 IntentService 等。</p>
+<p> <strong>致谢：</strong></p>
+<ol>
+<li>《第一行代码（第二版）》·郭霖</li>
+</ol>
+ <center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Studio 中常用的一些布局(三)</title>
+    <url>/2017/04/16/Android-Studio-%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%83%E5%B1%80-%E4%B8%89/</url>
+    <content><![CDATA[<p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg" alt></p>
+<h2 id="侧滑菜单的优化"><a href="#侧滑菜单的优化" class="headerlink" title="侧滑菜单的优化"></a>侧滑菜单的优化</h2><p>这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：</p>
+<a id="more"></a>
+<p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png" alt></p>
+<h3 id="菜单页面定制布局"><a href="#菜单页面定制布局" class="headerlink" title="菜单页面定制布局"></a>菜单页面定制布局</h3><p>谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Support 库中提供的一个控件，所以我们首先要添加对应的依赖项。在 app/build.gradle 中添加依赖项如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line">compile 'com.android.support:appcompat-v7:25.3.0'</span><br><span class="line">compile 'com.android.support:design:25.3.0'</span><br><span class="line">compile 'de.hdodenhof:circleimageview:2.1.0'</span><br></pre></td></tr></table></figure>
+
+<p>注意依赖包的版本问题，support 包的版本要一致，此处我用的是 25.3.0 的版本。其中的 circleimageview 是一个实现图片圆形化的包。</p>
+<p>另外，在 NavigationView 中，我们还需要准备两个布局，一个 menu 和 一个 headerLayout，分别对应的是成果图中的下部菜单选项和上部个人信息部分。在 menu 文件夹中生成一个 nav_menu.xml 文件，编写：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_call"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/account_circle"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Call"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_friends"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/people_white"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Friends"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_location"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/my_location"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Location"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_mail"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/event"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Mail"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_task"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/settings_white"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Tasks"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 layout 文件夹中同理新建一个 nav_header.xml 文件，编写如下</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"180dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:padding</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">de.hdodenhof.circleimageview.CircleImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/icon_image"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"70dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"70dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:src</span>=<span class="string">"@drawable/avatar"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/mail"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"dongodao@gamil.com"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"14sp"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/username"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_above</span>=<span class="string">"@id/mail"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"dongmodao"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"24sp"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>于是准备工作就完成了，接下来就在 activity_main.xml 中使用 NavigationView， 在 DrawerLayout 中删除原来的 TextView 布局，并添加子布局如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.NavigationView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/nav_view"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:menu</span>=<span class="string">"@menu/nav_menu"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:headerLayout</span>=<span class="string">"@layout/nav_header"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>于是乎，关于页面的部分就写完了。接下来就是在界面中侧滑菜单上显示出来了，转到 activity_main.xml 中，在 onCreate 中加入如下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">NavigationView navView = (NavigationView)findViewById(R.id.nav_view);</span><br><span class="line">navView.setCheckedItem(R.id.nav_call);</span><br><span class="line">navView.setNavigationItemSelectedListener(<span class="keyword">new</span> NavigationView.OnNavigationItemSelectedListener()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onNavigationItemSelected</span><span class="params">( MenuItem item)</span> </span>&#123;</span><br><span class="line">        mDrawerLayout.closeDrawers();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>到了这里，我们就已经基本实现了侧滑菜单了。这次就先到这里吧，最近时间段比较忙，这篇也被迫推到了现在。。本来基本每周周五都有时间来进行更新，这周进行实验然后也就被用去了这段时间，唉，加油吧以后！！！</p>
+<h2 id="小说明"><a href="#小说明" class="headerlink" title="小说明"></a>小说明</h2><p>下次更新这个系列应该是比较久之后了吧，毕竟这是学习郭神的书写的，以后打算写一些自己的东西。最近觉得只有那些自己能写出个一二三来的东西，才是自己比较了解的，对自己的帮助也更大。所以以后还是尽量写干货，这也是一个重复学习的过程。如果一味的学习人家的东西而不加入自己的成分就没有太多效果了，这也是我后面要多写自己的东西的原因之一。Anyway，加油！</p>
+<blockquote>
+<h3 id="如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。"><a href="#如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。" class="headerlink" title="如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。"></a>如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。</h3></blockquote>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android Studio</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Studio 中常用的一些布局(二)</title>
+    <url>/2017/04/02/Android-Studio-%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%83%E5%B1%80-%E4%BA%8C/</url>
+    <content><![CDATA[<p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/sea.jpg" alt></p>
+<h2 id="接上篇"><a href="#接上篇" class="headerlink" title="接上篇"></a>接上篇</h2><p>今天来讲讲如何实现侧滑菜单。效果图如下：<a id="more"></a></p>
+<p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/rst.png" alt></p>
+<p>看上去是不是很丑陋？我觉得也是（捂脸）。不过后续我们会逐步完善它，使得它成为下面这样的：</p>
+<p><img src="/2017/04/02/Android-Studio-中常用的一些布局-二/nextrst.png" alt></p>
+<p>是不是就高大上不少呢！嘿嘿，不过凡事都要慢慢来，一口吃不成胖子，我们今天还是实现第一张图的效果吧。话不多说，开工！</p>
+<p>2.  DrawerLayout 实现侧滑菜单<br>侧滑菜单，顾名思义，就是把一些菜单隐藏，不在主屏幕上显示，通过滑动的方式将菜单显示出来。为了实现这个效果，我们需要使用谷歌提供了一个  DrawerLayout  控件。这个控件实现侧滑菜单很方便。</p>
+<p>DrawerLayout 是一个布局，其中允许放入两个直接子控件，第一个子控件是显示主屏幕内容，第二个则是菜单的内容。在  activity_main.xml 中修改：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">FrameLayout...</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"This is Menu!"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"30sp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:background</span>=<span class="string">"#FFF"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的 FrameLayout 中的部分就是我们上次主屏幕的布局代码，请主动移除其中多余的名字空间。此时在侧滑菜单中，我们看到只加入了一个 TextView，所有在当前的状态就只能看到一行字。其中要注意的是：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">android:layout_gravity=<span class="string">"start"</span></span><br></pre></td></tr></table></figure>
+
+<p>这个属性是必须指定的，start 表示根据系统语言的书写方向显示菜单的方向，也可以定义 left, right。意思很明显，此处不多解释。<br>此时，如果我们运行程序，通过滑动就可以看到侧滑菜单了。但是很多人有可能不会发现这个功能，所以我们给它加上一个导航按钮。在 MainActivity  中修改：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);</span><br><span class="line">        setSupportActionBar(toolbar);</span><br><span class="line">        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);</span><br><span class="line">        ActionBar actionBar = getSupportActionBar();</span><br><span class="line">        <span class="keyword">if</span>(actionBar != <span class="keyword">null</span>)&#123;</span><br><span class="line">            actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</span><br><span class="line">            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span>   <span class="comment">//菜单栏的点击事件</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span></span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (item.getItemId())&#123;</span><br><span class="line">            <span class="keyword">case</span> android.R.id.home:</span><br><span class="line">                mDrawerLayout.openDrawer(GravityCompat.START);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            ...</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码应该很好理解，说明的一点就是 HomeAsUp 也即是 Toolbar 最左侧的按钮，默认是箭头，此处对它进行了修改，其 id 永远是 android.R.home，主要不要少了 android。<br>至此，在 Toolbar 的最左侧就有了一个按钮，可以打开侧滑菜单。今天的任务也就完成了。</p>
+<h4 id="小说明"><a href="#小说明" class="headerlink" title="小说明"></a>小说明</h4><p>这个布局系列后面还会继续，不过不一定是连续发，因为我可能写一个近期看的东西，比如最近在研究谷歌的基本 MVP 架构，也许下次先讲这个。至于布局系列可能会延后，不过不会停更。（如果发现有什么问题可以联系我）。</p>
+<blockquote>
+<h3 id="如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。"><a href="#如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。" class="headerlink" title="如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。"></a>如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。</h3></blockquote>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android Studio</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Studio 中常用的一些布局(一)</title>
+    <url>/2017/03/31/Android-Studio-%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B8%83%E5%B1%80/</url>
+    <content><![CDATA[<p><img src="/2017/03/31/Android-Studio-中常用的一些布局/Beach.jpg" alt></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>对于应用开发者来说，让应用拥有一个漂亮的外观往往能让用户有一个很好的印象。而上一星期刚好看了郭神的《第一行代码》，觉得其中介绍的布局方式使我受益良多，所以今天就介绍一些在 Android Studio 中的布局。这些是目前我所遇到了比较合适于简单开发的布局，以此记之。如果想要更详细的了解，建议阅读郭霖大神的 《第一行代码(第二版)》。</p>
+<a id="more"></a>
+<h2 id="正式开始"><a href="#正式开始" class="headerlink" title="正式开始"></a>正式开始</h2><p>1. Toolbar<br>众所周知，Toolbar 是 Android App 上端显示的内容，当我们新建一个 AS 项目时，AS 自动给我们添加了 ActionBar，但是这个 Toolbar 并不总能满足我们的需求，有时候就需要自定义的 Toolbar。因此我们就需要先修改为没有自带的 Toolbar 的主题。 下面是主要代码:<br>修改 res/values/styles.xml 中的相应属性如下:</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme"</span> <span class="attr">parent</span>=<span class="string">"Theme.AppCompat.Light.NoActionBar"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时达到的效果就是隐藏了原本的 ActionBar， 接下来使用 Toolbar 代替它。<br>修改 activity_main.xml 如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 引用 app --&gt;</span></span><br><span class="line">xmlns:app="http://schemas.android.com/apk/res-auto"</span><br><span class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span></span></span><br><span class="line"><span class="tag">                <span class="attr">app:layout_scrollFlags</span>=<span class="string">"scroll|enterAlways|snap"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接着在 MainActivity 中的 onCreate 方法中 Toolbar 加入到 SupportActionBar 中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);</span><br><span class="line">setSupportActionBar(toolbar);</span><br></pre></td></tr></table></figure>
+
+<p>此时就可以看到和 ActionBar 完全相同的效果。我们接下来对它继续完善。<br>右击 res → New → Directory， 创建 menu 文件夹。 在其中新建一个 toolbar.xml， 添加如下代码：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/backup"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_backup"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:title</span>=<span class="string">"Backup"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"always"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/delete"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_delete"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:title</span>=<span class="string">"Delete"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"ifRoom"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/settings"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_settings"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:title</span>=<span class="string">"Settings"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:showAsAction</span>=<span class="string">"never"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码中的图片自行查找并添加，此处推荐 Google 使用的 <a href="https://material.io/icons/" target="_blank" rel="noopener">Material Design Icon</a>，这个网站上有非常丰富的标准图标资源，而且提供多种分辨率的图片，能满足很多开发的需要了。<br>此时已经可以显示了，接下来进行点击事件的模拟。在 MainActivity 中加入</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span></span>&#123;</span><br><span class="line">     getMenuInflater().inflate(R.menu.toolbar, menu);</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="meta">@Override</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span></span>&#123;</span><br><span class="line">     <span class="keyword">switch</span> (item.getItemId())&#123;</span><br><span class="line">         <span class="keyword">case</span> R.id.backup:</span><br><span class="line">             Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Backup"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">case</span> R.id.delete:</span><br><span class="line">             Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Delete"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">case</span> R.id.settings:</span><br><span class="line">             Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Settings"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         <span class="keyword">default</span>:</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上就完成了点击事件的模拟。</p>
+<h5 id="由于篇幅原因以及肚子饿了-最大原因-，今天暂时到这里，后面会补上其他内容。下一次讲滑动菜单。"><a href="#由于篇幅原因以及肚子饿了-最大原因-，今天暂时到这里，后面会补上其他内容。下一次讲滑动菜单。" class="headerlink" title="由于篇幅原因以及肚子饿了(最大原因)，今天暂时到这里，后面会补上其他内容。下一次讲滑动菜单。"></a>由于篇幅原因以及肚子饿了(最大原因)，今天暂时到这里，后面会补上其他内容。下一次讲滑动菜单。</h5><blockquote>
+<h3 id="如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。"><a href="#如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。" class="headerlink" title="如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。"></a>如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。</h3></blockquote>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android Studio</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android 初次面试</title>
+    <url>/2018/06/26/Android-%E5%88%9D%E6%AC%A1%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<p><img src="/2018/06/26/Android-初次面试/index.jpg" alt></p>
+<h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>这是我的第一次技术类面试，很幸运的通过了。谨以这篇博客记录一下这个有着特殊意义的面试。流程为笔试，技术面、hr面、管理层面试。<a id="more"></a></p>
+<h3 id="笔试"><a href="#笔试" class="headerlink" title="笔试"></a>笔试</h3><p>给了 4 页的试题，5 分，10 分不等。以下是一个试题的回忆版本：<br> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1. 线程与进程的区别</span><br><span class="line">2. 给 100 个 String 字符串对象，如何高效将其首尾连接起来？</span><br><span class="line">3. A 为基类，B，C 为 A 的子类。给了几个引用，new 了几个对象。判断 6 个赋值语句中哪 3 个是正确的。考虑类型转换。</span><br><span class="line">4. View 的 onTouchEvent 和 onInterceptTouchEvent 的区别？</span><br><span class="line">5. 。。。</span><br><span class="line">6. 类中有静态属性，有静态方法中调用了 ``this.静态属性名``，这种写法有问题吗？</span><br><span class="line">7. 如何在后台线程中更新进度？如何在线程中更新控件内容？</span><br><span class="line">8. 写一个 Singleton.</span><br><span class="line">9. 一个有序的 ArrayList，利用折半的方法快速查找值的索引。</span><br><span class="line">10. 两个有序整数数组 A，B，如何将 B 整合到 A 中，保持 A 是升序的。Java 实现。</span><br><span class="line">11. 反转一个单向链表。</span><br><span class="line">12. 计算一个目录下文件的数目，考虑存在子文件夹的情况。</span><br></pre></td></tr></table></figure></p>
+<p>第五题不知道怎么就忘记了。。。第三题和第五题答得不好，其他都还可以。</p>
+<h3 id="技术面试"><a href="#技术面试" class="headerlink" title="技术面试"></a>技术面试</h3><p> 来了一个技术面试管，问了十几个问题，对不会给了不少提示，很有耐心，挺好的一次面试体验。就没记得太清楚了，挑一些还记得的吧。<br>  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+ 开机启动广播，执行一个超过 10 秒的任务，如何实现？10s 无返回值则会被删掉。</span><br><span class="line">+ 用过数据库吗？怎么用的？</span><br><span class="line">+ try 中 return，catch，finally 中还执行吗？finally 都执行。</span><br><span class="line">+ A &lt;- B &lt;- C 的继承关系，其中无参构造器中调用方法，会输出什么？子类构造函数会调用父类的无参构造函数。</span><br><span class="line">+ 讲一下 Hanlder。</span><br><span class="line">+ 一个 App 有多个 moudle，如何通过一个 moudle A 唤起 moulde B？</span><br><span class="line">+ 闪屏页面内容如何更新？</span><br><span class="line">+ 。。。 还有很多？暂时记不起来了，总共有 13 条以上。。。</span><br></pre></td></tr></table></figure></p>
+<h3 id="HR-面和管理层面试"><a href="#HR-面和管理层面试" class="headerlink" title="HR 面和管理层面试"></a>HR 面和管理层面试</h3><p> HR 是个漂亮的小姐姐，问了不少生活上的问题，以及个人的兴趣之类的，坚持某件事情吗，大学生活等，很友善，聊的也挺开心，很轻松的环境。管理层面试时候就没问多少问题了，主要还是比较忙吧，面试进行到这个时候已经过了接近三个小时了，所以简单介绍了一下公司就结束了。总的来说，这是一个挺轻松的面试过程。不过从面试中也察觉了自己存在的诸多问题，以后要着手解决，收获也不少。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p> 总的来说，在面试的前几天是有点消极懈怠的，看了一些泰剧。。。威敏啥的刷完了就单刷了几部。。。所以说准备其实是不太充分的，其实应该可以做到更好。而且并不是等到准备完成了再去面试，不断的面试对自己其实有很大的帮助。有点小后悔准备的很晚，而且还不充分，这是病，得改！！！</p>
+ <center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android 广播机制与服务</title>
+    <url>/2018/03/07/Android-%E5%B9%BF%E6%92%AD%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%9C%8D%E5%8A%A1/</url>
+    <content><![CDATA[<p><img src="/2018/03/07/Android-广播机制与服务/main-img.jpg" alt title="image from Momentum"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天有兴趣来看看 Android 相关的一些东西，看了一些关于桌面弹窗的内容，然后谷歌看到实现方式大多是使用服务(Service)来实现的，然后想着想着又想到了广播机制(Broadcast)。于是今天稍微写一下关于两者的一点内容，内容不多，偏向于入门，算是用于备忘吧。<a id="more"></a></p>
+<h2 id="广播机制-Broadcast"><a href="#广播机制-Broadcast" class="headerlink" title="广播机制(Broadcast)"></a>广播机制(Broadcast)</h2><p> 广播机制，广而播之，通俗来说就是将一个通告向所有地方（频道）发送，在 Android 中，就是向监听了某个广播的接收器发送通告。比如电池电量、时间更变等情况下，会发送对应的广播，如果应用注册了这两个广播，就可以接收到该条广播，从而实现对应的操作。<br> 广播分为两种类型：标准广播和有序广播。</p>
+<ul>
+<li><strong>标准广播</strong>：完全异步的广播，所有接收器几乎同时收到消息，无顺序，不可截获。是 1:N 的状态。</li>
+<li><strong>有序广播</strong>:同步执行的广播，一个时刻只会被一个接收器接收，完成逻辑的执行后方可继续传播，有顺序，可被截获，随后的接收器就不能收到消息了。</li>
+</ul>
+<h3 id="接收广播"><a href="#接收广播" class="headerlink" title="接收广播"></a>接收广播</h3><p> 广播接收器需要注册广播才能接收到广播，并处理逻辑。注册广播有两种方法，动态注册，也即在代码中注册，静态注册则是在 AndroidManifest.xml 中注册。</p>
+<p> 接收流程主要为：</p>
+<ol>
+<li><p>新建继承自 BroadcastReceiver 的接收器，并重写 onReceive() 方法。</p>
+</li>
+<li><p>使用 IntentFilter 的实例的 addAction() 方法添加对应广播的 action。</p>
+</li>
+<li><p>创建接收器实例，然受使用 registerReceiver 传入参数接收器和 IntentFilter 的实例。动态注册时需要 unregisterReceiver() 取消注册。</p>
+<p>郭神《第一行代码》示范如下(如需进行其他的复杂逻辑操作，可能需要添加权限)：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> IntentFilter intentFilter;</span><br><span class="line"><span class="keyword">private</span> NetworkChangeReceiver networkChangeReceiver;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line">    intentFilter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">    intentFilter.addAction(<span class="string">"android.net.conn.CONNECTIVITY_CHANGE"</span>);</span><br><span class="line">    networkChangeReceiver = <span class="keyword">new</span> NetworkChangeReceiver();</span><br><span class="line">    registerReceiver(networkChangeReceiver, intentFilter);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDestroy();</span><br><span class="line">    unregisterReceiver(networkChangeReceiver);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NetworkChangeReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span><span class="params">(Context context, Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(context, <span class="string">"network change."</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>动态注册需要在程序启动之后才能接收广播，静态注册则不必启动。静态注册也需要自定义接收器才能实现自己的逻辑。同时要在 AndroidManifest.xml 中注册，在 application 标签内新建子标签如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">"广播接收器名"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:enabled</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">"true"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"广播活动"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="发送广播"><a href="#发送广播" class="headerlink" title="发送广播"></a>发送广播</h3><p> 发送自定义广播流程：</p>
+<ol>
+<li><p>定义接收器</p>
+</li>
+<li><p>在 AndroidManifest.xml 中注册接收器，名称为接收器类名，使用自定义广播值作为筛选，</p>
+</li>
+<li><p>使用 sendBroadcast(new Intent(“广播活动值”)) 发送广播。</p>
+<p>发送有序广播，使用 sendOrderBroadcast(intetn, 权限字符串/null)，可以在筛选器中使用 priority 更改接收广播的优先级，接收器收到后可以截断 abortBroadcast()。</p>
+</li>
+</ol>
+<p> <strong>使用本地广播</strong>：为了避免其他程序接收广播，使用本地广播，广播只能在应用内接收，不能在系统全局接收，作用为保密性强，排外性高（不接受外部应用同一个广播活动值），高效率。</p>
+<p> 所以要定义一个 LocalBroadcastManager 实例如 localBroadcastManager 用于管理本地广播的接发。发送时使用该 localBroadcastManager.sendBroadcast(new Intent(“广播活动值”))，注册/注销时也需要该实例的相应方法，和全局类似，只是有实例发起。不再赘述。</p>
+<h2 id="服务-Service"><a href="#服务-Service" class="headerlink" title="服务(Service)"></a>服务(Service)</h2><p>服务可以认为是在后台运行的任务，使用于执行不需交互并长期运行的任务，切换应用至后台时仍然运行。依赖于创建服务的应用程序进程，杀死该进程则服务停止。服务不会自动开启线程，代码默认运行在主线程中，需在内部手动开启子线程并处理任务，否则可能阻塞主线程。</p>
+<h3 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h3><p>服务的使用流程：</p>
+<ol>
+<li>自定义服务继承于 Service，实现 onBind() 方法。</li>
+<li>可根据需求重写诸如 onCreate()、onStartCommand()、 onDestroy() 等方法。</li>
+<li>在 AndroidManifest.xml 中注册服务，类似于广播，标签为 service，主要属性 enabled 和 exported.</li>
+<li>使用 Intent 启动和停止，如 startService(new Intent(Context, ServiceName.class)), 同理使用 stopService(Intent)。</li>
+</ol>
+<h3 id="和活动通信"><a href="#和活动通信" class="headerlink" title="和活动通信"></a>和活动通信</h3><p> 使用 onBind() 方法实现，在其中返回一个继承 Binder 类型的实例，如 UploadBinder extends Binder,其中定义可以在外部使用的方法，以进行消息传递。创建 ServiceConnection 匿名类，重写相应方法。绑定服务和解绑服务。</p>
+<p> 主要的代码入下：<br> <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">MyService</span> <span class="keyword">extends</span> <span class="title">Service</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> MyBinder myBinder = <span class="keyword">new</span> MyBinder();</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyBinder</span> <span class="keyword">extends</span> <span class="title">Binder</span></span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getXXX</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">// todo:.........</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> myBinder;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建 ServiceConnection 匿名类，并重写两个方法，分别用于连接服务时和断开服务时</span></span><br><span class="line"><span class="keyword">private</span> ServiceConnection connection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName componentName, IBinder iBinder)</span> </span>&#123;</span><br><span class="line">        myBinder = (MyBinder)iBinder;</span><br><span class="line">        <span class="comment">// 执行 MyBinder 的公开方法，获取信息</span></span><br><span class="line">        myBinder.getXXX();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName componentName)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 绑定服务</span></span><br><span class="line">Intent bindIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, MyService<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">bindService(bindIntent, connection, BIND_AUTO_CREATE); <span class="comment">// 绑定，绑定后自动创建服务</span></span><br><span class="line">unbindService(connection);  <span class="comment">// 解除绑定</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>好饿，写不下去了，今天看了这两个东西，写这个要时间好久，饿的不行了，11 点早午餐到现在，不行了，我要回去吃东西了，后面写的仓促，不过大致能看懂吧。如果不懂可以找找郭神的《第一行代码》看看对应章节。这些东西书籍为主，谷歌为辅，差不多的。饿，饿，饿，曲项向晚餐。—— 2018-03-07 20:51</p>
+<center> --- end --- </center>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C# 中的委托与事件</title>
+    <url>/2017/05/28/C-%E4%B8%AD%E7%9A%84%E5%A7%94%E6%89%98%E4%B8%8E%E4%BA%8B%E4%BB%B6/</url>
+    <content><![CDATA[<p><img src="/2017/05/28/C-中的委托与事件/C-%E4%B8%AD%E7%9A%84%E5%A7%94%E6%89%98%E4%B8%8E%E4%BA%8B%E4%BB%B6%5Cwater.jpg" alt></p>
+<h2 id="委托与事件"><a href="#委托与事件" class="headerlink" title="委托与事件"></a>委托与事件</h2><p>委托和事件是 C# 中一个比较重要的部分。最近小组作业中使用到了它们，今天自己写的时候遇到了小问题，于是也就稍微探究了一下。</p>
+<a id="more"></a>
+
+<p><strong>实现的基本方法</strong></p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// (1) 定义委托</span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">myHandler</span>(<span class="params"><span class="keyword">int</span> a, <span class="keyword">int</span> b</span>)</span>;</span><br><span class="line"><span class="comment">// (2) 定义事件</span></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">event</span> myHandler myevent;</span><br><span class="line"><span class="comment">// (3) 注册事件</span></span><br><span class="line">myevent += myFunction;</span><br><span class="line"><span class="comment">// (4) 实现方法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myFunction</span>(<span class="params"><span class="keyword">int</span> a, <span class="keyword">int</span> b</span>)</span></span><br><span class="line"><span class="function"></span>&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>个人理解</strong></p>
+<p>委托相当于获得了一个函数的指针。可以在本类中调用其他类的函数，只要这个委托可以在其他类中注册；同时，在实现上，这个所谓的其他类的参数也可以被使用，这也是委托和事件的方便之处。<br>也就是说该类的持有者可以实现该类的事件，并在事件中使用持有者类的对象，在该类中调用该事件则会执行持有者类中的事件。</p>
+<p><img src="/2017/05/28/C-中的委托与事件/C-%E4%B8%AD%E7%9A%84%E5%A7%94%E6%89%98%E4%B8%8E%E4%BA%8B%E4%BB%B6%5CCsharp_delegate_event.png" alt></p>
+<p>如上图，在 Fields 类中定义了委托 FieldDeleteHandle(object sender, Field field) 以及事件 FieldDeleteHandle FieldDelete，在持有者 Dataset 类中注册并实现了该事件，其中调用的 DataSet 类的其他成员，这些成员并不是 Fields 类中的。</p>
+<p>所以，如果某个类改变后要对另外一个类有某种影响，则可以通过事件已经两个对象的公共持有者进行处理，子类通知持有者类，由持有者类对另外的子类进行处理。</p>
+<p>本文最初是收录在自己的学习笔记关于 C# 部分内容的，只是今天突然所感而写。好久没更新了，虽然这篇文章很短，而且还有些许不成熟之处，但是还是发一下，至少感觉到学到了一点东西的。</p>
+<p>懒癌病发！！！</p>
+<p>不想写作业！！！</p>
+<p>期末更懒。。。。</p>
+<p>就这样，没了。</p>
+<center> --- end --- </center>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>C#</tag>
+        <tag>委托</tag>
+        <tag>事件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++ 多态性与虚函数</title>
+    <url>/2017/06/08/C-%E5%A4%9A%E6%80%81%E6%80%A7%E4%B8%8E%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<p>![夜空与宁静](C-多态性与虚函数\stars in night sky.jpg)</p>
+<p><strong>写在前面：</strong>最近快期末考了，事情真的好多，作业总也写不完的感觉，好久没更新了，只能把自己的学习笔记中一些自己亲自测试过的东西搬到这边来了。这次写的是 C++ 中的多态性和虚函数，也是最近作业中需要使用的东西。知识这种东西吧，只有自己亲身体会以及实践后才能比较清楚，写笔记和不写笔记真的不一样。话不多说，回归主题！</p>
+<a id="more"></a>
+
+<h2 id="多态性"><a href="#多态性" class="headerlink" title="多态性"></a>多态性</h2><p>多态性是指一个事物具有多个状态。重载函数拥有同一个函数名，不同的函数体，调用同一个函数，分别实现不同的函数体的功能，这也是多态的一个体现。不同的对象，对于同一个消息（函数），有不同的实现行为（功能），这也是多态的一种表现。</p>
+<p>多态性从实现上分为静态多态性以及动态多态性。</p>
+<p>静态多态性也称为编译时的多态性，在编译时，已经根据变量的类型和个数或者对象所属的类型确定执行什么操作，类似的就是函数的重载，在不同类型或者相同类型中同名函数的调用，除此之外，还有运算符的重载，也是静态多态性的一种。</p>
+<p>动态多态性也称为运行时的多态性，在编译时无法知道要处理的是什么操作，只能在程序的执行过程中根据具体的情况来动态的判断要执行的操作。这样多态性一般通过继承和虚函数来实现。</p>
+<p>单单使用继承，子类中如果需要使用和父类中同名的函数，则需要重新定义，并且新定义的函数会覆盖父类的函数，父类函数被屏蔽。也即，派生类的对象是不能访问从基类中继承来的同名函数，这也是虚函数的由来，通过虚函数就能动态解决这问题。</p>
+<p>先看一下使用继承而不使用虚函数带来的问题。</p>
+<p><strong>testcode.h</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> TESTCODE_H_	<span class="comment">//用于判断是否已经调用了该头文件，避免重复调用错误 #define 保护</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TESTCODE_H_</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"><span class="keyword">double</span> x;</span><br><span class="line"><span class="keyword">double</span> y;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Point(<span class="keyword">double</span> a, <span class="keyword">double</span> b);	<span class="comment">//声明构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">GetX</span><span class="params">()</span></span>;	<span class="comment">//声明各类函数</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">GetY</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PointD</span> :</span> <span class="keyword">public</span> Point</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"><span class="keyword">double</span> z;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">PointD(<span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c);</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">GetZ</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>	<span class="comment">//结束 ifndef</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>testcode.cpp</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"testcode.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">Point::Point(<span class="keyword">double</span> a, <span class="keyword">double</span> b)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">this</span>-&gt;x = a;</span><br><span class="line"><span class="keyword">this</span>-&gt;y = b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Point::GetX</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>-&gt;x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">Point::GetY</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>-&gt;y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Point::Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"x = "</span> &lt;&lt; <span class="keyword">this</span>-&gt;x &lt;&lt; <span class="string">"\ty = "</span> &lt;&lt; <span class="keyword">this</span>-&gt;y &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PointD::PointD(<span class="keyword">double</span> a, <span class="keyword">double</span> b, <span class="keyword">double</span> c) :Point(a, b)</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">this</span>-&gt;z = c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">PointD::GetZ</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">this</span>-&gt;z;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PointD::Print</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">"x = "</span> &lt;&lt; <span class="keyword">this</span>-&gt;x &lt;&lt; <span class="string">"\ty = "</span> &lt;&lt; <span class="keyword">this</span>-&gt;y &lt;&lt; <span class="string">"\tz = "</span> &lt;&lt; <span class="keyword">this</span>-&gt;z &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>程序入口：test.cpp</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"testcode.h"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Point a(10, 20), *p;</span><br><span class="line">p = &amp;a;</span><br><span class="line">p-&gt;Print();</span><br><span class="line"><span class="function">PointD <span class="title">b</span><span class="params">(<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>)</span></span>;</span><br><span class="line">p = &amp;b;</span><br><span class="line">p-&gt;Print();</span><br><span class="line">system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出结果</span></span><br><span class="line"><span class="comment">x = 10 y = 20</span></span><br><span class="line"><span class="comment">x = 10 y = 20</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面的程序可以看到，尽管使用的是基类的指针类型，但是指针指向派生类的时候也没有执行派生类定义的 Print 函数。这并不是我想要的，我想要的是，当指针指向的是派生类的时候，执行的是派生类定义的函数。要解决这个问题就需要使用虚函数。</p>
+<h2 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h2><p>虚函数的出现就是为了实现派生类对象能够调用不同派生层次的同名函数。定义如下：<br>在基类中：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">virtual</span> 函数类型 函数名(参数表)&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运用虚函数解决上述问题。在 <code>testcode.h</code> 中在 <code>void Print()</code> 前加上关键字 <code>virtual</code>，表明将把这个函数定义为虚函数，在其后的继承关系中不需要重复添加。只要要求函数名、函数类型、参数列表与基类相同即可，否则渐变成重载。</p>
+<p>其他部分不变，而结果则变为了：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">x = 10 y = 20</span></span><br><span class="line"><span class="comment">x = 10 y = 20 z = 30</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>符合预期，动态根据指针指向的类型选择执行怎样的操作。成功。</p>
+<p><strong>这个的笔记是根据书籍《程序设计与算法语言——C++ 程序设计基础》中对于虚函数的介绍而修改过来的。有条件可以读一读。</strong></p>
+<center> --- end --- </center>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>多态性</tag>
+        <tag>虚函数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Echarts 的基本使用和 Android 连接 Mysql 数据库</title>
+    <url>/2018/01/29/Echarts-%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%92%8C-Android-%E8%BF%9E%E6%8E%A5-Mysql-%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<p><img src="/2018/01/29/Echarts-的基本使用和-Android-连接-Mysql-数据库/tower.jpg" alt></p>
+<p>好久好久没有更新博客了。。。</p>
+<p>大学生活中的最后一个假期如期而至，这次回家好像比往常有更多学习的心思，可能时因为下学期准备毕业，准备找工作的原因？好像也不是很强烈。不过，回家一个人也是好无聊的样子，于是今天写了一些东西，虽然都是比较简单的东西吧。<a id="more"></a></p>
+<p>进入了少网络的环境下，更容易专注于做一些事情。今天下午做了一些在 Android 中使用 Echarts 和连接 Mysql 数据库的尝试。其实也是之前答应了朋友要和他一起做一个 App 的原因。趁着无聊就来学习一下。</p>
+<h2 id="使用-Echarts"><a href="#使用-Echarts" class="headerlink" title="使用 Echarts"></a>使用 Echarts</h2><h3 id="Echarts-是什么"><a href="#Echarts-是什么" class="headerlink" title="Echarts 是什么"></a>Echarts 是什么</h3><p>Echarts 是由百度公司开发的一个轻量级的可以轻松实现直观、可交互、高度自定义图表和可视化的 canvas 库，基于 zrender 和轻量级的 JavaScript 语言。其官方网址为 <a href="https://echarts.baidu.com" target="_blank" rel="noopener">Echarts</a>，在这里就不再多说，官网比我说的更加详细。</p>
+<h3 id="使用-Echarts-附加-JS-和-Android-应用的交互"><a href="#使用-Echarts-附加-JS-和-Android-应用的交互" class="headerlink" title="使用 Echarts (附加 JS 和 Android 应用的交互)"></a>使用 Echarts (附加 JS 和 Android 应用的交互)</h3><p>先从官网中下载最新的版本，<a href="https://echarts.baidu.com/tutorial.html" target="_blank" rel="noopener">戳这里</a>，同时还有如何操作的介绍。随后引入 Echarts，使用 echarts.init 方法初始化一个实例，使用 setOption 方法生成图表。如下是一个简单的示例：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">style</span>=<span class="string">"height: 100%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">style</span>=<span class="string">"height: 100%; margin: 0"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span> <span class="attr">style</span>=<span class="string">"height: 100%"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript">       <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementById(<span class="string">"container"</span>);</span></span><br><span class="line"><span class="actionscript">       <span class="keyword">var</span> myChart = echarts.init(dom);</span></span><br><span class="line"><span class="actionscript">       <span class="keyword">var</span> option = &#123;</span></span><br><span class="line">              title:&#123;</span><br><span class="line"><span class="actionscript">                     text:<span class="string">'入门示例'</span></span></span><br><span class="line">              &#125;,</span><br><span class="line">              tooltip:&#123;&#125;,</span><br><span class="line">              legend:&#123;</span><br><span class="line"><span class="actionscript">                     data:[<span class="string">'销量'</span>]</span></span><br><span class="line">              &#125;,</span><br><span class="line">              xAxis:&#123;</span><br><span class="line"><span class="actionscript">                     data:[<span class="string">"衬衫"</span>, <span class="string">"羊毛衫"</span>, <span class="string">"雪纺衫"</span>, <span class="string">"裤子"</span>, <span class="string">"高跟鞋"</span>, <span class="string">"袜子"</span>]</span></span><br><span class="line">              &#125;,</span><br><span class="line">              yAxis:&#123;&#125;,</span><br><span class="line">              series:[&#123;</span><br><span class="line"><span class="actionscript">                     name:<span class="string">'销量'</span>,</span></span><br><span class="line"><span class="actionscript">                     type:<span class="string">'bar'</span>,</span></span><br><span class="line">                     data:[5, 20, 36, 10, 15, 20]</span><br><span class="line">              &#125;]</span><br><span class="line">       &#125;;</span><br><span class="line">       myChart.setOption(option);</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>概括来说就是先获取一个实例，生成一个对应的 option，使用 setOption 方法，成图，over！</p>
+<p>今天还涉及一个部分就是动态加载数据的问题，需要在手机上点击之后更改图表，所以使用一个 JavaScript 函数来实现，在上述代码中自定义的 JavaScript 脚本部分加入如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calljs</span>(<span class="params">data</span>)</span>&#123;		<span class="comment">// 函数记得加 function 关键字</span></span><br><span class="line">    <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementById(<span class="string">"container"</span>);</span><br><span class="line">	<span class="keyword">var</span> myChart = echarts.init(dom);</span><br><span class="line">	<span class="comment">// 获取横纵数据</span></span><br><span class="line">	<span class="keyword">var</span> xList = data.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> item[<span class="number">0</span>];</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">var</span> valueList = data.map(<span class="function"><span class="keyword">function</span> (<span class="params">item</span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> item[<span class="number">1</span>];</span><br><span class="line">	&#125;);</span><br><span class="line">    <span class="keyword">var</span> option = &#123;</span><br><span class="line">	title:&#123;</span><br><span class="line">		text:<span class="string">'入门示例'</span></span><br><span class="line">	&#125;,</span><br><span class="line">	tooltip:&#123;&#125;,</span><br><span class="line">	legend:&#123;</span><br><span class="line">		data:[<span class="string">'销量'</span>]</span><br><span class="line">	&#125;,</span><br><span class="line">	xAxis:&#123;</span><br><span class="line">		data:xList</span><br><span class="line">	&#125;,</span><br><span class="line">	yAxis:&#123;&#125;,</span><br><span class="line">	series:[&#123;</span><br><span class="line">		name:<span class="string">'销量'</span>,</span><br><span class="line">		type:<span class="string">'bar'</span>,</span><br><span class="line">		data:valueList</span><br><span class="line">	&#125;]</span><br><span class="line">&#125;;</span><br><span class="line">myChart.setOption(option);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 Android App 中加入如下代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String data = <span class="string">"[[\"衬衫\",5],[\"羊毛衫\",20],[\"雪纺衫\",36],[\"裤子\",10],[\"高跟鞋\",15],[\"袜子\",20]]"</span>;</span><br><span class="line">webView.loadUrl(MessageFormat.format(<span class="string">"javascript:calljs(&#123;0&#125;)"</span>, data));	<span class="comment">// 以参数 data 执行脚本方法 calljs。不必新开线程，webView 自动在子线程中使用</span></span><br></pre></td></tr></table></figure>
+
+<p>以上是我今天需要使用的部分，关于 Android 和 JS 的交互，可以移步<a href="http://blog.csdn.net/carson_ho/article/details/64904691" target="_blank" rel="noopener">Android：你要的 WebView 与 JS 交互方式都在这里了</a>查看。</p>
+<h2 id="连接-Mysql-数据库"><a href="#连接-Mysql-数据库" class="headerlink" title="连接 Mysql 数据库"></a>连接 Mysql 数据库</h2><p>下午的另一个事情就是连接 MySQL 数据库，并读取信息。实现步骤如下：</p>
+<ol>
+<li>下载 MySQL 和 Java 连接器的包，如我使用的是 mysql-connector-java-5.1.28.jar。</li>
+<li>主要代码如下，如果提示使用 try/catch 的，请自行添加，此处把流程过一遍：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">String DRIVER = <span class="string">"com.mysql.jdbc.Driver"</span>;</span><br><span class="line">String USER = <span class="string">"username"</span>;</span><br><span class="line">String PASS = <span class="string">"password"</span>;</span><br><span class="line">String URL = <span class="string">"jdbc:mysql://123.207.110.110:3306/yourDBName"</span>;</span><br><span class="line">String sql = <span class="string">"select * from ......"</span></span><br><span class="line">Class.forName(DRIVER)</span><br><span class="line">Connection connection = DriverManager.getConnection(URL, USER, PASS);</span><br><span class="line">Statement statement = connection.createStatement();</span><br><span class="line">ResultSet resultSet = statement.executeQuery(sql);</span><br><span class="line"><span class="keyword">while</span>(resultSet.next())</span><br><span class="line">&#123;</span><br><span class="line">	String param1 = resultSet.getString(<span class="number">1</span>);		<span class="comment">// 读取记录，记录初始字段从 1 开始，不是从 0 开始</span></span><br><span class="line">	<span class="comment">// Todo: anything...</span></span><br><span class="line">&#125;</span><br><span class="line">resultSet.close();</span><br><span class="line">statement.close();</span><br><span class="line">connection.close();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>上面的操作，有比较多的是要在子线程中实现的，如 getConnection 和 executeQuery。另外，要在读取结束之后再关闭连接，注意顺序，否之会报错。反正，报错了看是什么错误，解决一下应该都没问题。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这其实是在假期写的文章，结果没有后续，留到现在才发布…[2018年3月4日 09点32分]</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Echarts</tag>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown语法的基本使用简介</title>
+    <url>/2017/03/04/Markdown%E8%AF%AD%E6%B3%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<p><img src="/2017/03/04/Markdown语法的基本使用简介/beautifulnature.jpg" alt></p>
+<p>Markdown是一种轻量级标记语言，创始人为John Gruber。Markdown目前是大多数博客爱好者以及作家比较钟爱的语言。本篇是一篇用Markdown语言写的介绍Markdown语法的博客。</p>
+<a id="more"></a>
+<p>经常使用的Markdown语法主要有以下一些内容，包括标题、段落和换行、区块引用、列表、代码区块、分隔线、连接、强调、代码、图片等。只要掌握了这些内容，基本的一些写作就已经没有问题了。</p>
+<p>为了写的更精细一些，以及不让自己觉得麻烦，所以将这个简介分为几次来写。本次主要介绍的是标题、段落和换行、区块引用、列表，其余的留到下次介绍。</p>
+<h2 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h2><p>Markdown语法的标题可以有6级，使用#号对标题进行定级。把#号写在标题前，数目从1个到6个，表示不同的阶数。如下所示：</p>
+<table><tr><td bgcolor="#E4E7E7">  # 这是1阶  
+  ## 这是2阶
+  ··· 依次类推
+  ###### 这是6阶
+</td></tr></table>
+
+<p>此外，标题还有一种使用底线的写法，在标题文字下方加入底线‘=’或‘-’，可以是2个以上的任意数量。‘=’表示最高阶，‘-’表示次高阶。</p>
+<table><tr><td bgcolor="#E4E7E7">
+这是最高阶
+===
+这是次高阶
+----
+</td></tr></table>
+
+<h2 id="段落和换行"><a href="#段落和换行" class="headerlink" title="段落和换行"></a>段落和换行</h2><p>Markdown中的段落是一个或者多个文本行。文本行的前后是空行时，这些文本行构成一个段落。(这个感觉没啥好说的，应该都懂。。。捂脸)</p>
+<h2 id="区块引用"><a href="#区块引用" class="headerlink" title="区块引用"></a>区块引用</h2><p>Markdown中使用‘&gt;’号进行区块引用，可以再每一行的前面添加‘&gt;’号，也可以一个段落的开头第一行加上‘&gt;’号，意味着，如果你不使用空行进行段落划分，该段文字都将成为区块引用的一部分。要说明的是，你在区块引用的中还可以使用其他的Markdown语法，这也给Markdown提供了更为灵活的用法。</p>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>Markdown的列表分为有序列表和无序列表。<br>其中，有序列表使用数字接着一个英文呢的句点进行标记，但是数字对于列表的顺序是没有影响的。无序列表使用单一的*、+、-号进行标记</p>
+<p>1. 有序列表</p>
+<table><tr><td bgcolor="#E4E7E7">
+1. 这是第一
+2. 这是第二
+7. 这是第三，因为数字7是对顺序时没有影响的，所以显示出来的序号将会是3
+</td></tr></table>
+
+<p>虽然这个语法有这样的性质，但是我建议还是按照平时的规范来进行书写，除了特殊情况，否则还是使用顺序数字标记比较好。另外，如果遇到不能很好的显示数字顺序时，可以把数字后的‘.’号进行转义。</p>
+<p>2. 无序列表</p>
+<table><tr><td bgcolor="#E4E7E7">
+* 这是星号
++ 这是加号
+- 这是减号
+</td></tr></table>
+
+<p>效果如下：</p>
+<blockquote>
+<ul>
+<li>这是星号</li>
+</ul>
+<ul>
+<li>这是加号</li>
+</ul>
+<ul>
+<li>这是减号</li>
+</ul>
+</blockquote>
+<hr>
+<p>其实今天写的东西也并不是很多，但是打字慢。。。行动慢。。。希望以后能做的更好一些吧。另外，坚持更新！今天先到这里吧。</p>
+<p>注：因为写这个文章的我也是一个Markdown新手，对于语法的了解还不是很到位，如果想要了解更加详细的内容，可以参考<a href="http://wowubuntu.com/markdown/#img" target="_blank" rel="noopener">Markdown语法说明</a>，这个估计都能看得懂。虽说很多人都写了这个Markdown语法的说明，但是我也是刚刚涉及，虽说没有别人写得好，但也算是自己熟悉Markdownd的一个过程吧。</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Markdown</tag>
+        <tag>写作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java 回调机制的使用</title>
+    <url>/2017/04/22/java-%E5%9B%9E%E8%B0%83%E6%9C%BA%E5%88%B6%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p><img src="/2017/04/22/java-回调机制的使用/nature-images.jpg" alt></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近随着期中的临近，感觉作业越来越多，过两天还是集中轰炸，感觉药丸啊！虽然还是有点作死的感觉，没有先把自己的作业做完就折腾着自己的 Android Studio，但是收获多少还是有一些的吧。在这个过程中，真的是越来越能感觉到自己的不足，发现在很多方面都很难做到很好。不过这个在学习的过程中毕竟是不可避免的。所以，这次要写的东西可能比较少，而且对于各位大神来说还是很鸡肋，但是还是要写的。（因为更多的问题还没有解决，所以没办法一次性写出来）。另外，虽然分享的东西少，但是也不能变成不分享，因为只要真的暂停了，那估计这股子劲就消失了。所以，加油吧！</p>
+<a id="more"></a>
+<h2 id="java-模块间的调用"><a href="#java-模块间的调用" class="headerlink" title="java 模块间的调用"></a>java 模块间的调用</h2><p>不仅仅在 java 语言里面，我们在编程的时候模块之间的调用都是不可避免的。总的来说，调用主要有以下几个类型：<br>1. 同步调用</p>
+<p><img src="/2017/04/22/java-回调机制的使用/direct1.png" alt></p>
+<p>同步调用是指类 A 调用类 B 中的某个方法，程序此时等待 B 中的这个方法执行完成。如果 B 需要使用较多的时间才能够完成任务，那么主线程（此时只有一个线程）就会发生阻塞。所以这种调用方法适合非耗时的调用。</p>
+<p>2. 异步调用</p>
+<p><img src="/2017/04/22/java-回调机制的使用/asynchronous.png" alt></p>
+<p>异步调用是的出现，避免了主线程的阻塞的发生。所谓的异步，就是指类 A 新建一个线程去运行类 B 中的某一个耗时的操作，或者在类 B 中的操作中是在线程中进行的，A类的方法直接对其调用。这样就程序中就运行了一个主线程和一个子线程，耗时工作在子线程中完成，主线程仍可以正常使用，不受耗时操作的影响。但是这样也会有一个问题，那就是，子线程和主线程的沟通问题，主线程不知道子线程的工作进行的程度，这在实际的编程中是不方便的。</p>
+<p>3. 回调机制</p>
+<p><img src="/2017/04/22/java-回调机制的使用/callback.png" alt></p>
+<p>正是上述的两种方法不能很好的满足人们的需求，回调机制就出现了。所谓的回调是指在类 A 中执行类 B 的某种方法，但是类 A 持有一个 CallbackListstener， 这个监听器作为参数传入类 B 的方法中，当完成所需的操作后，调用监听器的方法，A 中的监听器就会执行对应的操作。</p>
+<h2 id="实战演练"><a href="#实战演练" class="headerlink" title="实战演练"></a>实战演练</h2><p>下面是我的一个测试代码，很简单，请自行理解。<br>监听器接口：CallbackListstener</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CallbackListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onFinish</span><span class="params">(String info)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onError</span><span class="params">(Exception e)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中的接口可以按自己的需要设定。<br>耗时的操作子线程：MyThread</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ThreadSleep</span><span class="params">(<span class="keyword">final</span> String mystr, <span class="keyword">final</span> CallbackListener listener)</span></span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(mystr);</span><br><span class="line">                    System.out.println(<span class="string">"Wait for me 5s"</span>);</span><br><span class="line">                    Thread.sleep(<span class="number">5</span> * <span class="number">1000</span>);</span><br><span class="line">                    String info = <span class="string">"I am dongmodao. This comes from new thread."</span>;</span><br><span class="line">                    <span class="keyword">if</span>(listener != <span class="keyword">null</span>)&#123;</span><br><span class="line">                        listener.onFinish(info);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                    listener.onError(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试程序主入口类：Test()</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line"></span><br><span class="line">        MyThread.ThreadSleep(<span class="string">"New a Thread"</span>, <span class="keyword">new</span> CallbackListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinish</span><span class="params">(String info)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// 根据返回结果执行具体内容的逻辑</span></span><br><span class="line">                System.out.println(info);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Exception e)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// 执行异常处理</span></span><br><span class="line">                System.out.println(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"I am in MainThread."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码应该很简单，很容易看的懂，此处就不在多加赘述。运行的结果如下：</p>
+<p><img src="/2017/04/22/java-回调机制的使用/testrst.png" alt></p>
+<h2 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h2><p>这次分享的内容感觉有点水。。。，其实应该很多人都知道了的，但是我却是刚刚有所涉及。。。这也是我认识自己不足的地方。总结起来，自己的基础不是很牢固，但是有时候又会比较急，所以总是感觉不真实。虽然有些水，但是也是我学习或者说复习的一个体现吧。本来这次是想写关于 RecyclerView 加载网页图片时错乱的解决方案的，但是一时间对于网上给的解决方案并不是非常认可，总感觉实现的不够好，比较乱(也可能是我弱鸡看不懂(捂脸))，所以就暂时没贴出来，等到我找到解决的方法的时候在发一下吧！</p>
+<p>参考文章：<br><a href="http://www.importnew.com/24220.html" target="_blank" rel="noopener">Java回调机制解读</a></p>
+<p>附上郭神的一个解决 ListView 加载网页图片错乱的网址 <a href="http://blog.csdn.net/guolin_blog/article/details/45586553" target="_blank" rel="noopener">Android ListView异步加载图片乱序问题，原因分析及解决方案</a></p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Java 回调机制</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些感触</title>
+    <url>/2017/04/03/%E4%B8%80%E4%BA%9B%E6%84%9F%E8%A7%A6/</url>
+    <content><![CDATA[<p><img src="/2017/04/03/一些感触/road.jpg" alt></p>
+<h5 id="一些感触"><a href="#一些感触" class="headerlink" title="一些感触"></a>一些感触</h5><p>今天在张哥（stormzhang）的小密圈看到了一些同学的分享，感受到大家对于自己生活、学习和职业的热情和努力奋斗的高昂情绪。有个同学分享了他自己立下的 flag，能感受到雄心满满！再对比于我自己，感觉到自己有很多的不足之处，突然地有些惆怅以及愧疚。因为我在年初也确定了不少的“小目标”，但是就目前的情况来看，并不是所有的“小目标”都得到了很好的实行。</p>
+<a id="more"></a>
+<p>首先，就学习英语来说，我还是没有能坚持做到打卡，而且当时还是以「平时网上看文档的时候看英语文档就能练习了」为借口，然而就现在边看边点翻译的情况来看，这个借口也很难成立了。另外就是，计划比较频繁的更新博客，虽然也没有明显的断更，但是总感觉质量不是很高，其实应该可以做得更好一些。比如现在已经写好的一些文章，里面就存在不少的坑我没有填上。这也是我目标和行动上并没有达成高度的一致的表现。</p>
+<p>所以，为了成功更好的我，现在重新开始给自己定下一些个人的原则，以后尽全力做符合这个原则的事。以后也许会有更新，但是一定要让自己明白什么是对、什么是错。<br>以下是具体要求：</p>
+<blockquote>
+<ol>
+<li>要么不承诺，要么一定要实现</li>
+<li>多阅读书籍，而且是「一字不差的阅读」</li>
+<li>对于学习过的内容，要画思维导图记录下来</li>
+<li>认真的对待每一件事，并且投入热情，提高效率，积极提问</li>
+<li>慎重思考，不要后悔</li>
+<li>减弱拖延症，能够早完成的一定不要拖延</li>
+<li>有时间多锻炼，不要总是宅，生活规律一些</li>
+<li>坚持原则</li>
+<li>坚持原则</li>
+<li>坚持原则</li>
+</ol>
+</blockquote>
+<p>以上是对自己的要求，尽全力做到！加油！</p>
+<h5 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h5><blockquote>
+<p>为了实现上面的原则，接下来先把自己在博客上的坑给填满。以后写博客要再三检查，而且坚持原创以及做一些亲测过的分享。加油！</p>
+</blockquote>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>意识流</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用 LitePal 操作数据库</title>
+    <url>/2017/09/17/%E4%BD%BF%E7%94%A8-LitePal-%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<p><img src="/2017/09/17/使用-LitePal-操作数据库/night.jpg" alt></p>
+<h2 id="使用-LitePal-操作数据库"><a href="#使用-LitePal-操作数据库" class="headerlink" title="使用 LitePal 操作数据库"></a>使用 LitePal 操作数据库</h2><p>简单说说，只要自己明白，会用就好！<a id="more"></a></p>
+<h3 id="前记"><a href="#前记" class="headerlink" title="前记"></a>前记</h3><p>今天和一个同学聊天，发现我好久更新关于 Android 的文章了，于是在聊天之后，把上一次没看问完的数据持久化看了一遍，虽然没有码代码，但是把基本理论给清理了一下。算是温习以及新学吧。但是。。。啊，我的报告啊，报告没写完就来这里浪？明天爬不起来怎么能写完，说好的不熬夜呢。。。有时候来了心情自己也控制不了。。。于是。。。「2017-09-17 02:32:12」</p>
+<h3 id="关于-LitePal"><a href="#关于-LitePal" class="headerlink" title="关于 LitePal"></a>关于 LitePal</h3><p>LitePal 是一款开源的 Android 数据库框架，采用对象关系映射（ORM：Object Relational Mapping）的模式，对常用数据库功能封装，可以不必编写 SQL 语句就可完成建表和 CRUD。<a href="https://github.com/LitePalFramework/LitePal" target="_blank" rel="noopener">LitePal 的 GitHub 地址</a>.</p>
+<h3 id="配置-LitePal"><a href="#配置-LitePal" class="headerlink" title="配置 LitePal"></a>配置 LitePal</h3><ol>
+<li><p>在依赖 dependencies 闭包中添加依赖。</p>
+<blockquote>
+<p>compile ‘org.litepal.android:core:1.6.0’</p>
+</blockquote>
+</li>
+<li><p>配置 app/src/main/assets/litepal.xml 文件。</p>
+<blockquote>
+<p>&lt;?xml version=”1.0” encoding=”utf-8”?&gt;</p>
+<p> &lt;litepal&gt;</p>
+<p> &lt;dbname value=”BookStore” &gt;&lt;/dbname&gt;</p>
+<p> &lt;version value=”1” &gt;&lt;/version&gt;</p>
+<p> &lt;list&gt;<br> &lt;/list&gt;</p>
+<p>&lt;/litepal&gt;</p>
+</blockquote>
+<p>dbname 标签用于指定数据库名，version 标签用于指定版本号，list 标签用于指定所用的映射模型。</p>
+</li>
+<li><p>配置 AndroidManifest.xml</p>
+<blockquote>
+<p>在 application 标签下添加 ``android:name=”org.litepal.LitePalApplication”</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>对象关系映射（ORM：Object Relational Mapping）</strong></p>
+<p>编程语言是面向对象语言，数据库为关系型数据库，将面向对象的语言与面向关系的数据库之间建立一种映射关系，即为对象关系映射。</p>
+<p>使用面向对象的思维来操做数据库，不需要使用 SQL 语句。</p>
+<h3 id="操作数据库"><a href="#操作数据库" class="headerlink" title="操作数据库"></a>操作数据库</h3><ol>
+<li><p>定义一个类，这个类将和数据库中要建立的表拥有相同的字段，也即类的字段和数据表的列是行对应的。如 Book 类与 Book 表有相同的字段。</p>
+</li>
+<li><p>将新建类添加到映射模型列表中。在 litepal.xml 文件中的 list 标签添加映射关系入下：&lt;mapping class=”com.包名.Book”&gt;&lt;/mapping&gt;，使用完整类名。</p>
+</li>
+<li><p>使用 <code>LitePal.getDatabase();</code> 完成创建表操作。</p>
+</li>
+<li><p>升级数据库版本，修改 litepal.xml 的 version 标签加 1 即可。会自动保留原有数据。</p>
+</li>
+<li><p><strong>进行 CRUD 操作时，需要使新建类继承 DataSupport 类。</strong></p>
+</li>
+<li><p>C 操作。添加新数据时，只需 new 一个对象，设置字段值，调用对象的 <code>.save()</code> 方法即可。</p>
+</li>
+<li><p>U 操作。区分对象是否已经存储，<code>model.isSaved()</code> 可用与判断，对于已经存储的对象，更改其值之后使用对象的 <code>.save()</code> 更新数据库；无论对象是否存储，使用对象的 <code>.updateAll()</code> 方法按条件进行更新（是已存储，则修改，否则添加吧）。将字段设置为默认值时需注意，Java 对象初始化时已有默认值，使用 <code>.setToDefault()</code> 操作。<strong>每新建一个类的对象时就相当于将新建或修改一条数据。</strong></p>
+</li>
+<li><p>D 操作。调用 <code>DataSupport.delete()</code> 方法即可。</p>
+</li>
+<li><p>R 操作。使用 <code>DataSupport.findAll()</code> 方法获得满足条件的新建类的对象的 List。</p>
+</li>
+</ol>
+<p>上述为个人认识，如有差错，可与我联系。学习资料为郭霖大神《第一行代码》的<strong>数据持久化</strong>章节的内容。</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何使用Hexo和GitHub搭建博客</title>
+    <url>/2017/03/01/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Hexo%E5%92%8CGitHub%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p><img src="/2017/03/01/如何使用Hexo和GitHub搭建博客/flower.jpg" alt></p>
+<p>好久没有更新博客，这篇博客是在我建立博客初期时就已经新建好的的，只是后面因为嫌麻烦并且写了其他的一些东西，以至于这篇本该是最初完成的博客竟被排到这个时候。今天上午打算把遗留的问题以及空有框架的博客正式的补全一下。「2017/3/25」</p>
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>写这个博客的原因主要有两点，一个是分享一下自己如何建立起这个博客的，尽可能详细的展现出来给大家。为什么分享？一个主要的原因就是我自己本省搭建这个博客的时候在网上搜索了各种各样的教程，但是不是所有的教程都是令人满意的。甚至在我看来，很多教程并不能成功的搭建起一个博客（其中可能是因为时间久远，以至于操作方法产生了很大的不同）。另一个就是作为我的一个「里程碑」式的记录吧。我想在这个博客上记录从今往后我在生活中遇到的一些问题，也可以记录一下自己的感受和体会，换言之，「以此志之」。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>在正式开始搭建博客之前，你需要进行一些准备工作。这些操作大多可以在<a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a> 的官方网站上看到，如果想看原文的可以点击跳转。<br>1. 注册一个 GitHub 账号<br>登录 <a href="https://github.com" target="_blank" rel="noopener">「GitHub」官网</a> 注册一个账号，点击注册进入注册页面。如下：<br><img src="/2017/03/01/如何使用Hexo和GitHub搭建博客/signup.png" alt><br>填写相应的个人信息，按照流程走，一直到注册完成就可以了，</p>
+<p>2. 新建一个 repository<br>注册好一个账号之后就要新建一个 repository，名称为 username.github.io，更改 username 为你的用户名。我的如下（因为我已经新建过了，所以我的会报错，最初新建是不会报错的）：<br><img src="/2017/03/01/如何使用Hexo和GitHub搭建博客/newrepository.png" alt></p>
+<p>3. 安装 Git<br>如果已经安装了 Git 就可以跳过这个步骤。 <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a> 可以在这里下载。安装过程应该不会有什么问题，随后在命令行中输入 git 命令，如果有响应，说明安装成功。如果失败，请自行 Google，此处就不再展开。<br>运行 git bash，运行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> f:</span><br><span class="line">mkdir GitHubBlog</span><br><span class="line"><span class="built_in">cd</span> GitHubBlog</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/username/username.github.io  //记得更改 username</span><br><span class="line"><span class="built_in">cd</span> username.github.io</span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Hello World"</span> &gt; index.html</span><br><span class="line">git add --all</span><br><span class="line">git commit -m <span class="string">"Initial commit"</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>此时，你就把远程的 repository 克隆到当前的「f:/GitHubBlog」目录之下了。并且在目录下创建了一个 index.html 文件。随后把本地代码块提交到了你的远端 GitHub 上面的 master 分支上。稍微等待后，你就可以在网址上输入 <a href="http://username.github.io" target="_blank" rel="noopener">http://username.github.io</a> 来看看效果。当然，现在网页上只出一行 Hello World，看上去很简陋，需要我们后面去完善它。该步骤完成。</p>
+<p>4. 安装 Node.js<br><a href="https://nodejs.org/zh-cn/" target="_blank" rel="noopener">Node.js</a> 可以在这里获取，选择合适自己的版本下载，按照提示安装即可。</p>
+<h2 id="正式搭建"><a href="#正式搭建" class="headerlink" title="正式搭建"></a>正式搭建</h2><p>经过上面的操作我们已经得到了一个博客的雏形，接下来就是对它进行美观与配置。此处是使用 Hexo 来进行博客框架的搭建。此时，我假设你已经成功完成了上述步骤。下面就要开始使用 Hexo，在命令行中运行如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>此处是进行 hexo 的安装。下面的教程可以在 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 官网看到，我只是进行了实例化而已。安装成功之后，在 git bash 中运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> F:/GitHubBLog</span><br><span class="line">hexo init Blog</span><br><span class="line"><span class="built_in">cd</span> Blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>经过上面的代码之后，在「 F:/GitHubBLog」中新建了一个 Blog 文件夹，这就是以后我们管理博客的位置。此时，Hexo 已经帮我们建立好了博客的框架了。<br>运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s --debug</span><br></pre></td></tr></table></figure>
+
+<p>在浏览器中输入 localhost:4000，就可以看到它给我们自动生成的第一篇「Hello World」博客。这篇博客里面介绍的将是我们经常使用的内容。<br>到这里，搭建工作已经告一段落了。剩下的就是更换主题的工作了。更换主题要在「F:\GitHubBlog\Blog\themes」中下载好主题，可以看到当前已经有一个「landscape」文件夹，那就是我们当前的主题。<br>运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> themes</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next.git</span><br></pre></td></tr></table></figure>
+
+<p>就是转到 themes 文件夹，然后远程下载 next 主题。更多的主题可以去看 <a href="https://hexo.io/themes/" target="_blank" rel="noopener">hexo主题</a>。然后选中主题，再克隆到本地即可。<br>下载完成之后，修改 「Blog/_config.yml」 文件中的 theme 的值为：hexo-theme-next，即那你要使用的主题名称。如图：<br><img src="/2017/03/01/如何使用Hexo和GitHub搭建博客/themes.png" alt title="themes.png"></p>
+<h2 id="新建博客"><a href="#新建博客" class="headerlink" title="新建博客"></a>新建博客</h2><p>完成了上述的操作之后，我们已经把博客的框架搭建好了。下面来尝试新建一个新的文章。这些内容可以在自动生成的Hello World」中看到。这里就简单写一下。<br>运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo n <span class="string">"新文章名"</span></span><br></pre></td></tr></table></figure>
+
+<p>自动在「source/_posts」文件夹下生成了「新文章名.md」文件，这个就是博客的主体。使用 Sublime Text 或者 Atom 等支持 Markdown 语法的文本编辑器编写内容。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s --debug</span><br></pre></td></tr></table></figure>
+
+<p>在 debug 模式下运行本地服务器，可以在浏览器中查看当前的博客状态。参数 –debug 非必须。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g --debug</span><br></pre></td></tr></table></figure>
+
+<p>在「Blog/public」生成静态文件。建议修改生成的位置，否则每次生成之后都要赋值到本地的 username.github.io 代码库中，很麻烦。<br>打开「Blog/_config.yml」文件，修改 public_dir 的值为我们的代码库的位置。如图：<br><img src="/2017/03/01/如何使用Hexo和GitHub搭建博客/public.png" alt><br>提交到远程代码库，运行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo d --debug -m <span class="string">"message"</span></span><br></pre></td></tr></table></figure>
+
+<p>message 为此次提交的信息。提交成功之后，就可以访问 <a href="http://username.github.io" target="_blank" rel="noopener">http://username.github.io</a> 查看你的博客的最新动态了。</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>到此，我们就已经完成了博客的搭建了，并且还新建了一篇文章。上面介绍了一些基本的操作，但是并不只有这些操作，如果在实践的过程中遇到问题，可以邮件(<a href="mailto:tangqihaopku@gmail.com" target="_blank" rel="noopener">tangqihaopku@gmail.com</a>)联系我。当然，在整个过程中，我们需要配置的主要是「Blog/_config.yml」和「Blog/themes/hexo-theme-next/_config.yml」文件，只要把它们设置好了就没有多大问题了。</p>
+<h3 id="补充–关于更换电脑之后更新博客的问题"><a href="#补充–关于更换电脑之后更新博客的问题" class="headerlink" title="补充–关于更换电脑之后更新博客的问题"></a>补充–关于更换电脑之后更新博客的问题</h3><p>可以参考知乎上的这个问题的答案：<a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">使用hexo，如果换了电脑怎么更新博客？</a>。我采用的是 CrazyMilk 的解决方式。</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>技术</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用的hexo和git命令</title>
+    <url>/2017/03/10/%E5%B8%B8%E7%94%A8%E7%9A%84hexo%E5%92%8Cgit%E5%91%BD%E4%BB%A4-%E5%A4%87%E6%9F%A5/</url>
+    <content><![CDATA[<p><img src="/2017/03/10/常用的hexo和git命令-备查/beautyhouse.jpg" alt></p>
+<h3 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h3><p>对于使用hexo和git搭建的博客的人来说，熟悉一些常用的hexo和git命令是非常必要的，以下是我<br>现阶段经常使用到的一些命令，忘记的时候可以打开博客查看一下。我会把自己在学习过程中所遇<br>到的命令更新到这里，长时间维持更新。</p>
+<a id="more"></a>
+<h3 id="常用的hexo命令"><a href="#常用的hexo命令" class="headerlink" title="常用的hexo命令"></a>常用的hexo命令</h3><p>1. 生成新页面<br>首先，安装好hexo和git之后要新建一个新的页面，这时候我们需要运行</p>
+<blockquote>
+<p>hexo n “new_post_title”  //输入新的页面的名称</p>
+</blockquote>
+<p>于是hexo就会在source/_post/文件夹下生成名为new_post_title的.md文件，我们可以使用支持<br>Markdown语法的文本编辑器如sublime Text系列、Atom等打开.md文件编写我们的文件内容了。</p>
+<p>2. 在本地进行预览<br>当我们编写好了我们的.md文件，我们可能想在本地进行一下预览，看看效果，于是我们可以使用：</p>
+<blockquote>
+<p>hexo s  //等待完成之后可以在本机的4000端口查看我们的博客效果<br>heo s –debug  //使用debug模式，我们可以通过控制台看到浏览器向我们的服务器获取了那些<br>内容，可以知道我们项目存在那些问题</p>
+</blockquote>
+<p>3. 生成正式文件<br>经过本地预览没有问题之后，我们基本上就可以生成用于发布的文件了，使用：</p>
+<blockquote>
+<p>hexo g  //生产项目的正式文件，用于发布，默认保存在public文件夹之下，可以通过修改配置<br>使得生成在github.io的文件目录下。<br>hexo g –debug  //和上面的相似，可以看到生成的过程</p>
+</blockquote>
+<p>4. 发布到github服务器<br>经过上述的步骤之后，我们基本已经完成了所有的内容了，剩下的就是将本地文件上传到github上面，就可以在任意一台电脑对博客进行访问了。</p>
+<blockquote>
+<p>hexo deploy //发布到服务器<br>hexo deploy –debug -m [message]  //如果使用这个命令就进入debug模式并且commit的信息为message</p>
+</blockquote>
+<h3 id="常用git命令"><a href="#常用git命令" class="headerlink" title="常用git命令"></a>常用git命令</h3><blockquote>
+<p>git init //在当前文件夹生成一个代码库<br>git add [filename]  //把filename文件加入缓冲区中，等待提交<br>git add .  //把当前目录下所有文件都放入缓冲区中，等待提交<br>git commit -m [message]  //生成提交，提交信息为commit，并清空缓冲区内容</p>
+</blockquote>
+<h3 id="特别："><a href="#特别：" class="headerlink" title="特别："></a>特别：</h3><blockquote>
+<p>用hexo搭建的博客使用图片时，需要设置配置文件.config.yml文件中的<br>post_asset_folder: true<br>此时在source/_post/中生成和页面同名的文件夹，用于存储图片等资源，在markdown中调用时写成(文件夹名/图片名)即可，如果是对于早前没有生成文件夹的压面需要手动生成了。</p>
+</blockquote>
+<hr>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>更多关于 Git 的基础知识介绍，可以查看这篇博客<a href="1">一个小时学会 Git</a>，介绍的十分详细，非常适合初级学者。</p>
+<p>这应该是本文的最后一次更新，借用了他人的劳动成果，自己整理起来可能没有上述链接文章这么好。[2017年9月10日09:53:37]</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>慌慌张张 匆匆忙忙 为何生活总是这样</title>
+    <url>/2017/05/17/%E6%85%8C%E6%85%8C%E5%BC%A0%E5%BC%A0-%E5%8C%86%E5%8C%86%E5%BF%99%E5%BF%99-%E4%B8%BA%E4%BD%95%E7%94%9F%E6%B4%BB%E6%80%BB%E6%98%AF%E8%BF%99%E6%A0%B7/</url>
+    <content><![CDATA[<p><img src="/2017/05/17/慌慌张张-匆匆忙忙-为何生活总是这样/forest.jpg" alt="森林"><br>最近真的体会到歌词「慌慌张张 匆匆忙忙 为何生活总是这样」的境地了。随着时间越来越临近期末，前期留下的坑逐渐显现出来了。有时候过于高估自己的能力，总是喜欢把事情留到最后来解决，更有甚时，美其名曰：「有压力 有动力」，觉得自己很努力。无 Fuck 可说！都是假的！</p>
+<a id="more"></a>
+
+<p>这种情况真的是不可取啊，源于最近三天熬了两个夜晚写了两个作业，真心疲倦。每次看着 4，5 点钟外面天迷蒙渐亮的风景，都有点感叹，如果不是在熬夜，而是早起，看到这样的风景将是多好啊。</p>
+<p>事情总是得做，所以晚做不如早做。像是毛老师说的，做好提前时间差是很重要的。虽然有时候不以为意，但是每当到熬夜的时候总是觉得句句在理。</p>
+<p>拖延症的情况不是一天两天了，不得不承认，这股力量很强大。有时候也是自己的侥幸心理在作祟，觉得一定能完成。结果，慌慌张张，匆匆忙忙，做的东西总是感觉不够好，其实知道自己有能力做的更好的。</p>
+<p>于是乎，感觉又要立下 Flag 了。</p>
+<ul>
+<li>事情不论还有多久才提交，在有空的时候，用玩手机的时间，以及无聊多余睡觉的时间，先开始一部分工作，尽量早的做完。</li>
+<li>尽量早睡，如果自然清醒了就不要再躺着床上了，不然玩手机可以玩到其他国家的时间。</li>
+<li>对于没学好的知识，要及时的复习，该问问，该写写。要不然真的不知道你到考试的时候能写出什么鬼东西。（以此志：这学期没好好学习的日语课程，今晚考试，已然弃考，感觉对不起 200 大洋中的最后 30%，没好好复习）</li>
+</ul>
+<p>至于说博客，已经两三周没有正常更新内容了。因为个人的原因（拖拉、作业、<strong><em>懒癌</em></strong>），最近虽然有写过一个小 APP，但是感觉没有太多好的东西可以分享，于是就少了分享。其实说实在的，我最初的想法是想着单纯的分享一些关于 Android 以及 Java 等一些编程的东西，而且这些东西我并不是很熟悉，分享出来的过程也是一个复习的过程。最近在学习中遇到了一些其他的语言，东西很基础，但是我的基础不是很好，又要重新学习，又不好意思放上来。。。虚荣心在作祟，其实又没多少人看你的博客，应该放开自己，所以以后该分享的还是要分享。即使再小，也是我学习的过程不是？</p>
+<p>另外，最近都把自己学习上用到的东西记录在了 GitBook 上了，虽然目前还很少，但我相信会逐渐多起来的！</p>
+<p>地址：<a href="https://dongmodao.gitbooks.io/mystudynotes/content/" target="_blank" rel="noopener">我的学习笔记</a></p>
+<p>暂时如此吧，去跑步，公里数这两天跑完就轻松了。没了。</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>意识流</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>新学期计划</title>
+    <url>/2017/03/10/%E6%96%B0%E5%AD%A6%E6%9C%9F%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p><img src="/2017/03/10/新学期计划/flowers.jpg" alt="1"></p>
+<h3 id="关于新学期的计划"><a href="#关于新学期的计划" class="headerlink" title="关于新学期的计划"></a>关于新学期的计划</h3><p>首先，提高各方面能力，特别是编程能力！<br>学习以下的语言：</p>
+<blockquote>
+<ul>
+<li>C#</li>
+</ul>
+</blockquote>
+<ul>
+<li>C++</li>
+<li>Java</li>
+<li>Python</li>
+<li>Javascript</li>
+<li>markdown</li>
+<li>English</li>
+<li>日语</li>
+</ul>
+<a id="more"></a>
+<h3 id="需要熟悉掌握的IDE有"><a href="#需要熟悉掌握的IDE有" class="headerlink" title="需要熟悉掌握的IDE有"></a>需要熟悉掌握的IDE有</h3><blockquote>
+<ul>
+<li>Android Studio</li>
+</ul>
+</blockquote>
+<ul>
+<li>Visual Studio</li>
+<li>ItelliJ Idea</li>
+<li>sublime Text</li>
+<li>Atom</li>
+</ul>
+<h3 id="另外"><a href="#另外" class="headerlink" title="另外"></a>另外</h3><blockquote>
+<ul>
+<li>认真学习，完成课堂上布置的各项任务、作业等</li>
+</ul>
+</blockquote>
+<ul>
+<li>积极阅读各类书籍，包括 <strong>第一行代码</strong>、<strong>Thinking In Java</strong> 等</li>
+<li>学习社会心理学，更加了解自己</li>
+<li>提高绩点</li>
+<li>寻找合适的实习公司，尝试了解社会的运行</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>坚持更新博客，即使再忙，也不至于抽不出时间写的，加油！用博客记录自己这一年的变化吧！</p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>意识流</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>浅谈 MVP</title>
+    <url>/2017/04/07/%E6%B5%85%E8%B0%88-MVP-%E6%9E%B6%E6%9E%84/</url>
+    <content><![CDATA[<p><img src="/2017/04/07/浅谈-MVP-架构/beautiful-nature-images.jpg" alt></p>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>「MVP」架构在很多的编程项目中都可以用到，作为一个初学 Android 不久的人来说，这个架构应该能够帮助我们更好的组织我们的项目。冲着这个目的，自己也就趁机研究了一下「MVP」。同时也算是自己的一些探索吧，感觉自己的眼界太窄，所以不得不多吸收知识来充实自己。毕竟是初学者，我尽可能把我所了解到的东西分享给大家。如果有问题，可以联系我或者进行评论。</p>
+<a id="more"></a>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>这个 MVP 的介绍的项目主要是 Google 在 GitHub 上开源的一个 Android MVP 的实现，分析也是基于它的「android-architecture」项目下的子项目 「todo-mvp」。下面是项目的 GitHub 地址，有兴趣的同学可以尝试研究一下。</p>
+<p>GitHub地址: <a href="https://github.com/googlesamples/android-architecture?utm_source=tuicool&utm_medium=referral" target="_blank" rel="noopener">Android Architecture Blueprints</a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="什么是-MVP"><a href="#什么是-MVP" class="headerlink" title="什么是 MVP"></a>什么是 MVP</h3><p>MVP 全称是 Model-View-Presenter，是在 Model-View-Controller(MVC) 的基础上形成的一个新的架构。MVP 多数用在 UI 界面丰富的项目中。为了避免项目的整体结构过于复杂以及项目中单个文件的过度臃肿，使用 MVP 来让整体框架更加清晰，也更有利于进行模块化的开发、debug 的进行。想了解更多的同学可以看更多的关于 <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">MVP</a> 和  <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">MVC</a> 的介绍。</p>
+<p>下面是在维基百科上找到的一张关于 MVP 设计范式的图解。</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/Model_View_Presenter_GUI_Design_Pattern.png" alt></p>
+<p>从上面可以看到，Presenter 充当了 Model 和 View 之间通讯的中间人。 Model 和 View 并不直接连接，这也就使得整个架构之间的关系变得比较简单明了。 在 View 中，用户触发了事件之后，View 就告诉了 Presenter， Presenter 从 View 中获取所需要的数据，然后对 Model 进行更新。Model 中发生的更新事件也是通过 Presenter 来传递给需要展示的 View。这样一来整个架构就显得很清晰。</p>
+<h3 id="android-architecture-todo-mvp"><a href="#android-architecture-todo-mvp" class="headerlink" title="android-architecture/todo-mvp"></a>android-architecture/todo-mvp</h3><p>下面进入到 todo-mvp 中来进行具体的分析。项目的总体结构如下图</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/filelist.png" alt></p>
+<p>可以看到，项目包含了两个公共的接口：BasePresenter 和 BaseView。这个项目中所有的 Presenter 都继承自 BasePresenter， 所有的 View 都是继承自 BaseView。</p>
+<p>接着看界面，项目基本上是按照功能进行分类，项目总共要显示 4 个 UI 界面，AddEditTask(添加任务界面)、Statistics(统计界面)、TaskDetail(任务详情界面)、Tasks(总任务界面：主界面)。每个界面（功能）都单独分了一个包进行处理，自行对应上图。</p>
+<p>另外要注意的就是 data 包和 util 包，data 文件夹主要就是模拟生成数据的包，包含了对本地数据和远端数据的模拟，也就是关于数据的一层，也即 Model。而 util 包就是工具类的包，比如创建 fragment 并添加到对应的 Activity 中的工作。</p>
+<p>下面来看 tasks 包的内容：</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/taskslist.png" alt></p>
+<p>其中 ScrollChildSwipeRefreshLayout 和 TasksFilterType 分别是对 SwipeRefreshLayout 布局的一些刷新功能的重写以及对 Task 类型的状态进行枚举。</p>
+<p>但是，最主要的还是 Activity、Contract、Fragment、Presenter。这四个类支撑起了整个 Tasks 界面。在着个项目中的其他界面中每一个都包含着相似的这四个类。看看官方的说法：</p>
+<blockquote>
+<p>In this version of the app, as well as other versions based on it, each screen is implemented using the following classes and interfaces:</p>
+<ul>
+<li>A contract class which defines the connection between the view and the presenter.(<em>简单的说就是定义了 View 和 Presenter 之间的关联关系的 Contract 类</em>)</li>
+<li>An Activity which creates fragments and presenters.(<em>生成了 fragment 和 Presenter 的 Activity</em>)</li>
+<li>A Fragment which implements the view interface.(<em>实现了 View 接口的 Fragment</em>)</li>
+<li>A presenter which implements the presenter interface in the corresponding contract.(<em>实现了对应的 Contract 中的 presenter 接口的 Presenter</em>)</li>
+</ul>
+</blockquote>
+<p>括弧中的内容是我根据翻译和自己对项目的理解做的翻译，希望各位大佬不要笑话。接下来再进行深入的分析。</p>
+<p>先从 Contract 开始， Contract 中定义了继承自 BaseView 的接口 View 以及继承自 BasePresenter 的 Presenter，同时还定义了 View 和 Presenter 在沟通的过程中所需要用到的各种方法。</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/BaseView.png" alt><br>上图中可以看到 BaseView 在四个界面的实现时都经过了 Contract 和 Fragment 的引用，前者声明接口，后者进行实现。</p>
+<p>接着看 TasksPresenter 和 TasksFragment，前者是实现了 TasksContract 中的 Presenter 的接口，后者是继承了 Fragment 并且实现了 TasksContract 中的 View 接口。在 TasksPresenter 中声明了一个私有的变量 TasksContract.View，即 mTasksView。这个 mTasksView 就是和这个 TasksPresenter 相互关联的 View，同样的，在 TasksFragment 中也有一个相应的 TasksContract.Presenter。这是 View 和 Presenter 之间通信的基础。</p>
+<p>让我们更深入一些！看当界面 TasksFragment 中发生点击事件时项目的内部发生了什么操作。在 TasksFragment 中定义了一个事件监听 mItemListener，如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Listener for clicks on tasks in the ListView.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">TaskItemListener mItemListener = <span class="keyword">new</span> TaskItemListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTaskClick</span><span class="params">(Task clickedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.openTaskDetails(clickedTask);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleteTaskClick</span><span class="params">(Task completedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.completeTask(completedTask);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivateTaskClick</span><span class="params">(Task activatedTask)</span> </span>&#123;</span><br><span class="line">        mPresenter.activateTask(activatedTask);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>所以当我们的点击事件发生时，实际上就调用了与 TasksFragment(View) 相联系的 mPresenter，执行了 openTaskDetails 的方法， 于是跳到 TasksPresenter 中有对应的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openTaskDetails</span><span class="params">(@NonNull Task requestedTask)</span> </span>&#123;</span><br><span class="line">    checkNotNull(requestedTask, <span class="string">"requestedTask cannot be null!"</span>);</span><br><span class="line">    mTasksView.showTaskDetailsUi(requestedTask.getId());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Presenter 中可以进行相应的处理，可以和 Model 进行交互操作，此处是直接让对应的 TasksContract.View， 也即 mTasksView 执行了 showTaskDetailsUi 的方法。再次回到 TasksFragment 中：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showTaskDetailsUi</span><span class="params">(String taskId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// in it's own Activity, since it makes more sense that way and it gives us the flexibility</span></span><br><span class="line">    <span class="comment">// to show some Intent stubbing.</span></span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(getContext(), TaskDetailActivity<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    intent.putExtra(TaskDetailActivity.EXTRA_TASK_ID, taskId);</span><br><span class="line">    startActivity(intent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到 TasksFragment 的这个方法直接就打开了一个 Activity，也就是对应的 TaskDetailActivity。</p>
+<p>最后看 Activity 中的内容，它主要就是生成了一个 TasksPresenter(mTasksPresenter) 和一个 TasksFragment(tasksFragment)，并通过工具类 util 把 tasksFragment 添加到 Activity 中。剩下的主要就是做一些与侧滑菜单和 Toolbar 相关的工作，之后就没有其他太多的功能了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>经过上面的内容之后，我相信你对 MVP 在 Android 项目中的应用已经有了一定的了解。我们通过官方的示意图最后来复习一下：</p>
+<p><img src="/2017/04/07/浅谈-MVP-架构/mvp.png" alt></p>
+<p>在项目中， Activity 包含了 View 和 Presenter。View 主要是用 Fragment 进行实现。View 和 Presenter 之间的联系十分紧密，但 View 并不能直接与 Model 层相连接， 只有通过 Presenter 的帮助才能完成数据的交互。图中左侧部分就是 Model 层，主要实现数据的操作等逻辑处理。</p>
+<p>吼了，就这样结束吧，一写就停不下来，停不下来就要写好久。。。<br>加油！</p>
+<p>参考文章：</p>
+<p><a href="http://www.jianshu.com/p/9a6845b26856" target="_blank" rel="noopener">Android MVP 详解（上）</a></p>
+<p><a href="https://github.com/googlesamples/android-architecture/tree/todo-mvp/" target="_blank" rel="noopener">todo-mvp的README.md</a></p>
+<center> --- end --- </center>
+
+<hr>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>MVP</tag>
+      </tags>
+  </entry>
+</search>

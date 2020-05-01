@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
+<meta name="keywords" content="Android Studio,布局">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Studio 中常用的一些布局(三)">
+<meta property="og:url" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/index.html">
+<meta property="og:site_name" content="dongmodao&#39;s Blog">
+<meta property="og:description" content="侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png">
+<meta property="og:updated_time" content="2020-05-01T08:17:59.864Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Studio 中常用的一些布局(三)">
+<meta name="twitter:description" content="侧滑菜单的优化这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：">
+<meta name="twitter:image" content="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android Studio 中常用的一些布局(三) | dongmodao's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">dongmodao's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">19</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/dongmodao" class="github-corner" title="GitHub" aria-label="GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/16/Android-Studio-中常用的一些布局-三/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400">
+      <meta itemprop="name" content="dongmodao">
+      <meta itemprop="description" content="有善始者实繁 能克终者盖寡">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="dongmodao's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android Studio 中常用的一些布局(三)<a href="https://github.com/dongmodao/dongmodao.github.io/tree/hexo/source/_posts/Android-Studio-中常用的一些布局-三.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pencil-alt"></i></a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-16 21:30:28" itemprop="dateCreated datePublished" datetime="2017-04-16T21:30:28+00:00">2017-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-01 08:17:59" itemprop="dateModified" datetime="2020-05-01T08:17:59+00:00">2020-05-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/naturetree.jpg" alt></p>
+<h2 id="侧滑菜单的优化"><a href="#侧滑菜单的优化" class="headerlink" title="侧滑菜单的优化"></a>侧滑菜单的优化</h2><p>这是这个系列的第三篇文章。今天是在以前的基础上实现优化，上一次的侧滑菜单只是一个简单的 TexiView，今天我们将要把它做的更加好看、更加符合一般在 APP 中看到的样子。今天的成果图如下：</p>
+<a id="more"></a>
+<p><img src="/2017/04/16/Android-Studio-中常用的一些布局-三/rst.png" alt></p>
+<h3 id="菜单页面定制布局"><a href="#菜单页面定制布局" class="headerlink" title="菜单页面定制布局"></a>菜单页面定制布局</h3><p>谷歌给我们提供一个很好的方法来实现上述的功能，就是 NavigationView。NavigationView 是 Design Support 库中提供的一个控件，所以我们首先要添加对应的依赖项。在 app/build.gradle 中添加依赖项如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compile 'com.android.support:appcompat-v7:25.3.0'</span><br><span class="line">compile 'com.android.support:design:25.3.0'</span><br><span class="line">compile 'de.hdodenhof:circleimageview:2.1.0'</span><br></pre></td></tr></table></figure>
+
+<p>注意依赖包的版本问题，support 包的版本要一致，此处我用的是 25.3.0 的版本。其中的 circleimageview 是一个实现图片圆形化的包。</p>
+<p>另外，在 NavigationView 中，我们还需要准备两个布局，一个 menu 和 一个 headerLayout，分别对应的是成果图中的下部菜单选项和上部个人信息部分。在 menu 文件夹中生成一个 nav_menu.xml 文件，编写：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_call"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/account_circle"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Call"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_friends"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/people_white"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Friends"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_location"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/my_location"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Location"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_mail"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/event"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Mail"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">item</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_task"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:icon</span>=<span class="string">"@drawable/settings_white"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:title</span>=<span class="string">"Tasks"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 layout 文件夹中同理新建一个 nav_header.xml 文件，编写如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"180dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:padding</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">de.hdodenhof.circleimageview.CircleImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/icon_image"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"70dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"70dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:src</span>=<span class="string">"@drawable/avatar"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/mail"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"dongodao@gamil.com"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"14sp"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/username"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_above</span>=<span class="string">"@id/mail"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"dongmodao"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"24sp"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>于是准备工作就完成了，接下来就在 activity_main.xml 中使用 NavigationView， 在 DrawerLayout 中删除原来的 TextView 布局，并添加子布局如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.NavigationView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/nav_view"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:menu</span>=<span class="string">"@menu/nav_menu"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">app:headerLayout</span>=<span class="string">"@layout/nav_header"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>于是乎，关于页面的部分就写完了。接下来就是在界面中侧滑菜单上显示出来了，转到 activity_main.xml 中，在 onCreate 中加入如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NavigationView navView = (NavigationView)findViewById(R.id.nav_view);</span><br><span class="line">navView.setCheckedItem(R.id.nav_call);</span><br><span class="line">navView.setNavigationItemSelectedListener(<span class="keyword">new</span> NavigationView.OnNavigationItemSelectedListener()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onNavigationItemSelected</span><span class="params">( MenuItem item)</span> </span>&#123;</span><br><span class="line">        mDrawerLayout.closeDrawers();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>到了这里，我们就已经基本实现了侧滑菜单了。这次就先到这里吧，最近时间段比较忙，这篇也被迫推到了现在。。本来基本每周周五都有时间来进行更新，这周进行实验然后也就被用去了这段时间，唉，加油吧以后！！！</p>
+<h2 id="小说明"><a href="#小说明" class="headerlink" title="小说明"></a>小说明</h2><p>下次更新这个系列应该是比较久之后了吧，毕竟这是学习郭神的书写的，以后打算写一些自己的东西。最近觉得只有那些自己能写出个一二三来的东西，才是自己比较了解的，对自己的帮助也更大。所以以后还是尽量写干货，这也是一个重复学习的过程。如果一味的学习人家的东西而不加入自己的成分就没有太多效果了，这也是我后面要多写自己的东西的原因之一。Anyway，加油！</p>
+<blockquote>
+<h3 id="如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。"><a href="#如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。" class="headerlink" title="如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。"></a>如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。</h3></blockquote>
+<center> --- end --- </center>
+
+<hr>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2017/04/02/Android-Studio-中常用的一些布局-二/" rel="bookmark">Android Studio 中常用的一些布局(二)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2017/03/31/Android-Studio-中常用的一些布局/" rel="bookmark">Android Studio 中常用的一些布局(一)</a></div>
+    </li>
+  </ul>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Android-Studio/" rel="tag"># Android Studio</a>
+              <a href="/tags/布局/" rel="tag"># 布局</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/07/浅谈-MVP-架构/" rel="prev" title="浅谈 MVP">
+      <i class="fa fa-chevron-left"></i> 浅谈 MVP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/22/java-回调机制的使用/" rel="next" title="java 回调机制的使用">
+      java 回调机制的使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#侧滑菜单的优化"><span class="nav-number">1.</span> <span class="nav-text">侧滑菜单的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#菜单页面定制布局"><span class="nav-number">1.1.</span> <span class="nav-text">菜单页面定制布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小说明"><span class="nav-number">2.</span> <span class="nav-text">小说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如果想要了解的更仔细，请阅读郭霖大神著作-《第一行代码（第二版）》。"><span class="nav-number">2.1.</span> <span class="nav-text">如果想要了解的更仔细，请阅读郭霖大神著作 《第一行代码（第二版）》。</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="dongmodao"
+      src="https://avatars0.githubusercontent.com/u/23718611?v=3&s=400">
+  <p class="site-author-name" itemprop="name">dongmodao</p>
+  <div class="site-description" itemprop="description">有善始者实繁 能克终者盖寡</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/dongmodao" title="GitHub → https://github.com/dongmodao" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:tangqihaopku@gmail.com" title="E-Mail → mailto:tangqihaopku@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">dongmodao</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">46k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">42 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

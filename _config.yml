@@ -67,9 +67,9 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 # theme: next
-theme: next-reloaded
-#theme: landscape
-#theme: hux
+# theme: next-reloaded
+# theme: Hacker
+theme: gh-next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
